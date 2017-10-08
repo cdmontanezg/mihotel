@@ -74,6 +74,21 @@ angular
       label: 'Tables'
     }
   })
+  .state('app.components.daypilot', {
+      url: '/daypilot',
+      templateUrl: 'views/components/daypilot.html',
+      ncyBreadcrumb: {
+          label: 'Reservation'
+      },
+      resolve: {
+          loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+              // you can lazy load controllers
+              return $ocLazyLoad.load({
+                  files: ['js/controllers/daypilot.js']
+              });
+          }]
+      }
+  })
   .state('app.forms', {
     url: '/forms',
     templateUrl: 'views/forms.html',

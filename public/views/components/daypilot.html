@@ -1,0 +1,24 @@
+<div class="animated fadeIn">
+    <div ng-controller="DemoCtrl" >
+
+        <div style="float:left; width:160px">
+            <daypilot-navigator id="navigator" daypilot-config="navigatorConfig"></daypilot-navigator>
+        </div>
+        <div style="margin-left: 160px">
+            <div class="space options">
+                Room Filter:
+                <select ng-model="roomType">
+                    <option value="0">All</option>
+                    <option value="1">Single</option>
+                    <option value="2">Double</option>
+                    <option value="4">Family</option>
+                </select>
+            </div>
+            <daypilot-scheduler id="scheduler" daypilot-config="schedulerConfig" daypilot-events="events" ></daypilot-scheduler>
+
+            <div class="space">
+                <a href="" id="add-room" ng-click="addRoom()">Add Room</a>
+            </div>
+        </div>
+    </div>
+</div>

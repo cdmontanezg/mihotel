@@ -29,6 +29,8 @@
 /.idea/modules.xml
 /.idea/encodings.xml
 /.idea/runConfigurations/
+/.idea/dataSources/
+/.idea/dataSources.xml
 
 /config/env.production.yml
 /config/env.yml
