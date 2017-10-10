@@ -1,0 +1,51 @@
+<div class="col-lg">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-align-justify"></i> Reservas
+        </div>
+        <div class="card-body" ng-controller="reservasController">
+
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th>Huesped</th>
+                    <th>Email</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Estado</th>
+                    <th>Canal</th>
+                    <!--<th>Fecha creación</th>-->
+                    <!--<th>Fecha Actualización</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="reserva in getTodasReservas">
+                    <td>{{reserva.host_name}}</td>
+                    <td>{{reserva.host_email}}</td>
+                    <td>{{reserva.date_from}}</td>
+                    <td>{{reserva.date_to}}</td>
+                    <td>{{reserva.status}}</td>
+                    <td>{{reserva.channel_id}}</td>
+                    <!--<td>{{reserva.created_at}}</td>-->
+                    <!--<td>{{reserva.updated_at}}</td>-->
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Prev</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">4</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

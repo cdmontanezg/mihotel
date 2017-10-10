@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 channels = Channel.create([
-                          { name: 'Booking.com', url: 'http://booking.com' },
+                            { name: 'Booking.com', url: 'http://booking.com' },
                           { name: 'Expedia.com', url: 'http://expedia.com' }
                           ])
 

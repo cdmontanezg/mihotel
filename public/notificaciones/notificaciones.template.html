@@ -1,0 +1,52 @@
+<div class="col-lg">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-align-justify"></i> Notificaciones
+        </div>
+        <div class="card-body" ng-controller="notificacionesController">
+
+
+            <div>
+
+                <button type="button" class="btn btn-primary">Hoy</button>
+                <button type="button" class="btn btn-primary">7 Días</button>
+                <button type="button" class="btn btn-primary">15 Días</button>
+
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Huesped</th>
+                    <th>Descripción</th>
+                    <th>Fecha Notificación</th>
+                    <th>Canal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="notificacion in getTodasNotificaciones">
+                    <td>{{notificacion.reserva.huesped}}</td>
+                    <td>{{notificacion.reserva.descripcion}}</td>
+                    <td>{{notificacion.fecha}}</td>
+                    <td>{{notificacion.reserva.canal}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Prev</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">4</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
