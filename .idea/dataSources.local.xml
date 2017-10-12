@@ -3,21 +3,13 @@
   <component name="dataSourceStorageLocal">
     <data-source name="Rails mihotel: test" uuid="94a26ee4-530a-44f7-b841-bcd5164cc1bf">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
-      <first-sync>true</first-sync>
     </data-source>
     <data-source name="Rails mihotel: development" uuid="16438c2a-9d74-41a4-833b-f9baaec875b8">
-      <database-info product="PostgreSQL" version="9.5.9" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.1.1">
-        <identifier-quote-string>&quot;</identifier-quote-string>
-      </database-info>
-      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
-      <secret-storage>master_key</secret-storage>
-      <user-name>postgres</user-name>
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
       <introspection-schemas>mihotel_development:public</introspection-schemas>
     </data-source>
     <data-source name="Rails mihotel: production" uuid="5e919199-dd79-4a3f-8fd1-524842ab8f96">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
-      <first-sync>true</first-sync>
-      <user-name>mihotel</user-name>
     </data-source>
   </component>
 </project>

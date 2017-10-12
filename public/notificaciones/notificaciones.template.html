@@ -14,39 +14,26 @@
 
             </div>
 
-            <table class="table table-striped">
+            <table class="table table-striped" at-table at-list="todasNotificaciones" at-config="config" at-paginated>
                 <thead>
                 <tr>
-                    <th>Huesped</th>
-                    <th>Descripción</th>
-                    <th>Fecha Notificación</th>
-                    <th>Canal</th>
+                    <th at-attribute="nombreHuesped">Huesped</th>
+                    <th at-attribute="descripcion">Descripción</th>
+                    <th at-attribute="fecha">Fecha Notificación</th>
+                    <th at-attribute="canal">Canal</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="notificacion in getTodasNotificaciones">
-                    <td>{{notificacion.reserva.huesped}}</td>
-                    <td>{{notificacion.reserva.descripcion}}</td>
-                    <td>{{notificacion.fecha}}</td>
-                    <td>{{notificacion.reserva.canal}}</td>
+                <tr>
+                    <td at-implicit at-attribute="nombreHuesped"></td>
+                    <td at-implicit at-attribute="descripcion"></td>
+                    <td at-implicit at-attribute="fecha" at-sortable at-initial-sorting="asc"></td>
+                    <td at-implicit at-attribute="canal"></td>
                 </tr>
                 </tbody>
             </table>
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Prev</a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">4</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
+            <at-pagination at-config="config" at-list="todasNotificaciones"></at-pagination>
+
         </div>
     </div>
 </div>

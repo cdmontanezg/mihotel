@@ -8,7 +8,7 @@ class ReservationController < ApplicationController
   end
 
   def create
-    respond_with Reservation.create(params[:reservation])
+    respond_with Reservation.create(reservation_params)
   end
 
   def destroy
