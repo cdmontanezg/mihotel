@@ -7,7 +7,7 @@ class CreateReservations < ActiveRecord::Migration[5.1]
       t.datetime :date_to
       t.integer :status
 
-      t.references :channel, index: true, foreign_key: true
+      t.belongs_to :channel, index: true, foreign_key: true
 
       t.timestamps
     end

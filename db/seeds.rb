@@ -23,7 +23,11 @@ rooms = Room.create([
                     { number: '202', beds: 2, hotel: hotels.first }
                     ])
 
-# Reservation.create( [
-#                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-09-30', date_to:'2017-10-02', status: 1, channel: channels.first },
-#                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-09-30', date_to:'2017-10-02', status: 1, channel: channels.first  }
-#                    ])
+ reservations = Reservation.create( [
+                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-01', date_to:'2017-10-12', status: 1, channel: channels.first },
+                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-12', date_to:'2017-10-09', status: 1, channel: channels.first }
+                    ])
+
+rooms[0].reservations << reservations[0]
+rooms[0].reservations << reservations[1]
+rooms[1].reservations << reservations[0]

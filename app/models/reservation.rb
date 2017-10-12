@@ -1,3 +1,4 @@
 class Reservation < ApplicationRecord
-  has_one :channel
+  belongs_to :channel
+  has_and_belongs_to_many :rooms
 end
