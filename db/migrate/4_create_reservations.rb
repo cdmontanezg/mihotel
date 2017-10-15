@@ -5,7 +5,7 @@ class CreateReservations < ActiveRecord::Migration[5.1]
       t.string :host_email
       t.datetime :date_from
       t.datetime :date_to
-      t.integer :status
+      t.string :status
 
       t.belongs_to :channel, index: true, foreign_key: true
 

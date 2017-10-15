@@ -12,19 +12,3 @@
 //
 //= require rails-ujs
 //= require turbolinks
-
-//= require jquery/dist/jquery.js
-//= require tether/dist/js/tether.js
-//= require bootstrap/dist/js/bootstrap.js
-//= require angular/angular.min.js
-//= require angular-ui-router/release/angular-ui-router.min.js
-//= require oclazyload/dist/ocLazyLoad.min.js
-//= require angular-breadcrumb/dist/angular-breadcrumb.min.js
-//= require angular-loading-bar/build/loading-bar.min.js
-//= require popper.js/dist/popper.js
-
-/*
-*= require daypilot-all.min.js
-*/
-
-//= require_tree .

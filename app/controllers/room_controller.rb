@@ -26,18 +26,12 @@ class RoomController < ApplicationController
 
   def available
     respond_to do |format|
-      @rooms = Room.all.collect {|x| { id: x.id, name: x.number, capacity: x.beds, status: x.status } }
+      @rooms = Room.where(':capacity = 0 OR beds = :capacity',
+                          capacity: params[:capacity]).collect { |x| { id: x.id, name: x.number, capacity: x.beds, status: x.status }
+      }
+
       format.json { render json: @rooms }
       format.html { render json: @rooms }
-    end
-  end
-
-  def events
-    respond_to do |format|
-
-      @events = Reservation.all.collect {|x| { id: "x.id", text: x.host_name, start: x.date_from, end: x.date_to, resource: x.rooms[0].id, bubbleHtml:"Reservation details: <br\/>" + x.host_name, status:"New", paid:"0" } }
-      format.json { render json: @events }
-      format.html { render json: @events }
     end
   end
 

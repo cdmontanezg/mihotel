@@ -34,3 +34,4 @@
 
 /config/env.production.yml
 /config/env.yml
+/public/bower_components/

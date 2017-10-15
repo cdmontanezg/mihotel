@@ -17,17 +17,22 @@ hotels = Hotel.create([
                       ])
 
 rooms = Room.create([
-                    { number: '101', beds: 1, hotel: hotels.first },
-                    { number: '102', beds: 1, hotel: hotels.first },
-                    { number: '201', beds: 2, hotel: hotels.first },
-                    { number: '202', beds: 2, hotel: hotels.first }
+                    { number: '101', beds: 1, hotel: hotels.first, status: 'Ready' },
+                    { number: '102', beds: 1, hotel: hotels.first, status: 'Ready' },
+                    { number: '201', beds: 2, hotel: hotels.first, status: 'Ready' },
+                    { number: '202', beds: 2, hotel: hotels.first, status: 'Ready' },
+                    { number: '301', beds: 4, hotel: hotels.first, status: 'Ready' },
+                    { number: '302', beds: 4, hotel: hotels.first, status: 'Ready' }
                     ])
 
  reservations = Reservation.create( [
-                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-01', date_to:'2017-10-12', status: 1, channel: channels.first },
-                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-12', date_to:'2017-10-09', status: 1, channel: channels.first }
+                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-01', date_to:'2017-10-12', status: 'Confirmed', channel: channels.first },
+                    { host_name: 'Maria Perea', host_email: 'mperea@gmail.com', date_from: '2017-10-12', date_to:'2017-10-18', status: 'Arrived', channel: channels.first },
+                    { host_name: 'Jorge Leon', host_email: 'jleon@gmail.com', date_from: '2017-10-25', date_to:'2017-11-2', status: 'New', channel: channels[1] },
+                    { host_name: 'Luis Garcia', host_email: 'lgarcia@gmail.com', date_from: '2017-10-01', date_to:'2017-10-05', status: 'CheckedOut', channel: channels[1] },
                     ])
 
 rooms[0].reservations << reservations[0]
-rooms[0].reservations << reservations[1]
-rooms[1].reservations << reservations[0]
+rooms[1].reservations << reservations[1]
+rooms[2].reservations << reservations[2]
+rooms[4].reservations << reservations[3]

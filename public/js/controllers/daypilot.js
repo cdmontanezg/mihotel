@@ -1,7 +1,7 @@
 var dp;
 var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($scope, $timeout, $http) {
 
-    $scope.roomType = 0;
+    $scope.roomType = "0";
 
     $scope.$watch("roomType", function() {
         loadResources();
@@ -68,29 +68,33 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             }];
         },
         onEventMoved: function (args) {
-            $http.post("backend_move.php", {
+            $http.post("/reservation/move", {
                 id: args.e.id(),
                 newStart: args.newStart.toString(),
                 newEnd: args.newEnd.toString(),
                 newResource: args.newResource
             }).then(function(response) {
                 dp.message(response.data.message);
+                loadEvents();
             });
         },
         onEventResized: function (args) {
-            $http.post("backend_resize.php", {
+            $http.post("/reservation/resize", {
                 id: args.e.id(),
                 newStart: args.newStart.toString(),
-                newEnd: args.newEnd.toString()
+                newEnd: args.newEnd.toString(),
+                resource: args.e.resource()
             }).then(function() {
                 dp.message("Resized.");
+                loadEvents();
             });
         },
         onEventDeleted: function(args) {
-            $http.post("backend_delete.php", {
+            $http.post("/reservation/delete", {
                 id: args.e.id()
             }).then(function() {
                 dp.message("Deleted.");
+                loadEvents();
             });
         },
         onTimeRangeSelected: function (args) {
@@ -174,7 +178,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             }
 
             // customize the reservation HTML: text, start and end dates
-            args.data.html = args.data.text + " (" + start.toString("M/d/yyyy") + " - " + end.toString("M/d/yyyy") + ")" + "<br /><span style='color:gray'>" + status + "</span>";
+            args.data.html = args.data.bubbleHtml + args.data.text + " (" + start.toString("M/d/yyyy") + " - " + end.toString("M/d/yyyy") + ")" + "<br /><span style='color:gray'>" + status + "</span>";
 
             // reservation tooltip that appears on hover - displays the status text
             args.e.toolTip = status;
@@ -217,7 +221,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             end: to.toString()
         };
 
-        $http.post("/room/events", params).then(function(response) {
+        $http.post("/reservation/events", params).then(function(response) {
             if (day) {
                 $scope.schedulerConfig.timeline = getTimeline(day);
                 $scope.schedulerConfig.scrollTo = day;

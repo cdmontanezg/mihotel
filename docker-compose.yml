@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  pgdatabase:
+    image: 'postgres:10.0-alpine'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'admin'
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+
+  app:
+    environment:
+      PGHOST: pgdatabase
+    depends_on:
+      - 'pgdatabase'
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+    env_file:
+      - '.env'
+
+  web:
+    # set the build context to the root of the Rails app
+    build: 
+      context: .
+      dockerfile: Dockerfile-nginx
+    # makes the web container aware of the app container
+    links:
+      - app
+    # expose the port we configured Nginx to bind to
+    ports:
+      - "80:80"
+
+volumes:
+  postgres:
