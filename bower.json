@@ -1,6 +1,6 @@
 {
-  "name": "CoreUI",
-  "version": "1.0.0-alpha.5 (AngularJS)",
+  "name": "mihotel",
+  "version": "1.0.0",
   "dependencies": {
     "jquery": "^3.0.0",
     "tether": "latest",

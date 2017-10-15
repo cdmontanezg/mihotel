@@ -21,6 +21,7 @@ COPY config/puma.rb config/puma.rb
  
 # Copy the main application.
 COPY . .
+RUN bower install --allow-root
 
 EXPOSE 3000
 
