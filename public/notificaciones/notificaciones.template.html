@@ -8,9 +8,9 @@
 
             <div>
 
-                <button type="button" class="btn btn-primary">Hoy</button>
-                <button type="button" class="btn btn-primary">7 Días</button>
-                <button type="button" class="btn btn-primary">15 Días</button>
+                <button type="button" class="btn btn-primary" ng-click="filtrarxDias(0)">Hoy</button>
+                <button type="button" class="btn btn-primary" ng-click="filtrarxDias(7)">7 Días</button>
+                <button type="button" class="btn btn-primary" ng-click="filtrarxDias(15)">15 Días</button>
 
             </div>
 
@@ -27,8 +27,8 @@
                 <tr>
                     <td at-implicit at-attribute="nombreHuesped"></td>
                     <td at-implicit at-attribute="descripcion"></td>
-                    <td at-implicit at-attribute="fecha" at-sortable at-initial-sorting="asc"></td>
-                    <td at-implicit at-attribute="canal"></td>
+                    <td at-implicit at-attribute="fecha" at-sortable at-initial-sorting="desc"></td>
+                        <td at-attribute="canal"><img ng-src="{{obtenerImagenCanal(item.canal)}}"/></td>
                 </tr>
                 </tbody>
             </table>
