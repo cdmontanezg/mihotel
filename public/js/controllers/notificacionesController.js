@@ -1,7 +1,5 @@
 angular.module('app').controller('notificacionesController', function notificacionesController($scope, $http) {
 
-  var ctrl = this;
-
   $scope.todasNotificaciones = [];
 
   $scope.config = {

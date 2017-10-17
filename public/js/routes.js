@@ -141,4 +141,16 @@ angular
           }]
         }
       })
+      .state('app.tablero', {
+        url: '/tablero',
+        templateUrl: 'tablero/tablero.template.html',
+        resolve: {
+          loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+            // you can lazy load files for an existing module
+            return $ocLazyLoad.load({
+              files: ['js/controllers/tableroController.js']
+            });
+          }]
+        }
+      })
   }]);
