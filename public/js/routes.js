@@ -117,18 +117,6 @@ angular
         url: '/500',
         templateUrl: 'views/pages/500.html'
       })
-      .state('app.reservas', {
-        url: '/reservas',
-        templateUrl: 'reservas/reservas.template.html',
-        resolve: {
-          loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-            // you can lazy load files for an existing module
-            return $ocLazyLoad.load({
-              files: ['js/controllers/reservasController.js']
-            });
-          }]
-        }
-      })
       .state('app.notificaciones', {
         url: '/notificaciones',
         templateUrl: 'notificaciones/notificaciones.template.html',

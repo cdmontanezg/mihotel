@@ -3,6 +3,5 @@ Rails.application.routes.draw do
   root 'application#index'
   get 'daypilot' => 'application#daypilot'
   resources :room, only: [:index, :show, :create, :destroy], defaults: {format: :json}
-  resources :reservation, only: [:index, :show, :create, :destroy], defaults: {format: :json}
   resources :notification, only: [:index, :show, :create, :destroy], defaults: {format: :json}
 end
