@@ -1,0 +1,43 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-asterisk icon-bg"></i> Ocupación
+            </div>
+            <div class="card-body" ng-controller="tableroController">
+
+                <canvas id="pie1" class="chart chart-pie" chart-data="dataOcupadas" chart-labels="labelsOcupadas">
+                </canvas>
+
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-asterisk icon-bg"></i> Por liberar
+            </div>
+            <div class="card-body" ng-controller="tableroController">
+
+                <canvas id="pie3" class="chart chart-pie" chart-data="dataporLiberar" chart-labels="labelsporLiberar">
+                </canvas>
+
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-asterisk icon-bg"></i> Por ocupar
+            </div>
+            <div class="card-body" ng-controller="tableroController">
+
+                <canvas id="pie4" class="chart chart-pie" chart-data="dataporOcupar" chart-labels="labelsporOcupar">
+                </canvas>
+
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
