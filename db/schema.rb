@@ -36,13 +36,18 @@ ActiveRecord::Schema.define(version: 6) do
     t.string "descripcion"
     t.datetime "fecha"
     t.integer "canal"
+    t.bigint "hotel_id"
+    t.bigint "reservation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["hotel_id"], name: "index_notifications_on_hotel_id"
+    t.index ["reservation_id"], name: "index_notifications_on_reservation_id"
   end
 
   create_table "reservations", force: :cascade do |t|
     t.string "host_name"
     t.string "host_email"
+    t.string "host_phone_number"
     t.datetime "date_from"
     t.datetime "date_to"
     t.string "status"
@@ -69,6 +74,8 @@ ActiveRecord::Schema.define(version: 6) do
     t.index ["hotel_id"], name: "index_rooms_on_hotel_id"
   end
 
+  add_foreign_key "notifications", "hotels"
+  add_foreign_key "notifications", "reservations"
   add_foreign_key "reservations", "channels"
   add_foreign_key "rooms", "hotels"
 end

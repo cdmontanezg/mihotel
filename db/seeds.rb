@@ -32,6 +32,13 @@ rooms = Room.create([
                     { host_name: 'Luis Garcia', host_email: 'lgarcia@gmail.com', date_from: '2017-10-01', date_to:'2017-10-05', status: 'CheckedOut', channel: channels[1] },
                     ])
 
+notificactions = Notification.create([
+    {nombre_huesped: 'Juan Correa', descripcion: '1 habitación cama doble', fecha: '2017-10-01',canal: 1, hotel: hotels[0], reservation: reservations[0] },
+    {nombre_huesped: 'Maria Perea', descripcion: '1 habitación cama sencilla', fecha: '2017-10-12', canal: 1, hotel: hotels[0], reservation: reservations[1]},
+    {nombre_huesped: 'Jorge Leon', descripcion: '1 habitación cama sencilla', fecha: '2017-10-25', canal: 2, hotel: hotels[0], reservation: reservations[2]},
+    {nombre_huesped: 'Luis Garcia', descripcion: '1 habitación cama doble', fecha: '2017-10-01', canal: 2, hotel: hotels[0], reservation: reservations[3]},
+])
+
 rooms[0].reservations << reservations[0]
 rooms[1].reservations << reservations[1]
 rooms[2].reservations << reservations[2]

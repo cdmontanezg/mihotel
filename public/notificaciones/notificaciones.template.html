@@ -17,15 +17,15 @@
             <table class="table table-striped" at-table at-list="todasNotificaciones" at-config="config" at-paginated>
                 <thead>
                 <tr>
-                    <th at-attribute="nombreHuesped">Huesped</th>
+                    <th at-attribute="nombre_huesped">Huesped</th>
                     <th at-attribute="descripcion">Descripción</th>
-                    <th at-attribute="fecha">Fecha Notificación</th>
+                    <th at-attribute="fecha">Fecha</th>
                     <th at-attribute="canal">Canal</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td at-implicit at-attribute="nombreHuesped"></td>
+                    <td at-implicit at-attribute="nombre_huesped"></td>
                     <td at-implicit at-attribute="descripcion"></td>
                     <td at-implicit at-attribute="fecha" at-sortable at-initial-sorting="desc"></td>
                         <td at-attribute="canal"><img ng-src="{{obtenerImagenCanal(item.canal)}}"/></td>

@@ -14,7 +14,7 @@ angular.module('app').controller('notificacionesController', function notificaci
   }
 
   function consultarTodasNotificaciones() {
-    $http.get('/notification')
+    $http.get('/notification',{params: {hotel_id: 1}})
       .then(function (response) {
         $scope.todasNotificaciones = response.data;
       });
@@ -23,7 +23,7 @@ angular.module('app').controller('notificacionesController', function notificaci
 
 
   $scope.filtrarxDias = function filtrarxDias(dias) {
-    $http.get('/notification')
+    $http.get('/notification',{params: {hotel_id: 1}})
       .then(function (response) {
         notificaciones = response.data;
         $scope.todasNotificaciones = [];
