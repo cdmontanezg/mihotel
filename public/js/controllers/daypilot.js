@@ -109,14 +109,14 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                 }
             };
 
-            var nuevaReserva = {
-                'inicio': args.start,
-                'fin': args.end,
-                'cuarto': args.resource
-            }
+            var reservation = {
+                'start': args.start,
+                'end': args.end,
+                'resource': args.resource
+            };
 
-            sessionStorage.setItem('nuevaReserva', JSON.stringify(nuevaReserva));
-            
+            sessionStorage.setItem('newReservation', JSON.stringify(reservation));
+
             modal.showUrl("views/components/nuevaReserva.html");
         },
         onEventClick: function(args) {
@@ -128,7 +128,9 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                     loadEvents();
                 }
             };
-            modal.showUrl("edit.php?id=" + args.e.id());
+
+            sessionStorage.setItem('reservationId', args.e.id());
+            modal.showUrl("views/components/editarReserva.html");
         },
         onBeforeEventRender: function(args) {
             var start = new DayPilot.Date(args.data.start);

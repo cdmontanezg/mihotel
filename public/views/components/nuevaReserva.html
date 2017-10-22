@@ -28,13 +28,13 @@
 
     var app = angular.module('main', ['daypilot']).controller('NewReservationController', function ($scope, $timeout, $http) {
 
-        var nuevaReserva = JSON.parse(sessionStorage.getItem('nuevaReserva'));
+        var newReservation = JSON.parse(sessionStorage.getItem('newReservation'));
 
         $scope.reservation = {
             name: '',
-            start: nuevaReserva.inicio, // use ISO format for the model
-            end: nuevaReserva.fin, // use ISO format for the model
-            room: nuevaReserva.cuarto
+            start: newReservation.start, // use ISO format for the model
+            end: newReservation.end, // use ISO format for the model
+            room: newReservation.resource
         };
         $scope.delete = function () {
             $http.post("backend_delete.php", $scope.reservation).success(function (data) {
@@ -42,9 +42,17 @@
             });
         };
         $scope.save = function () {
-            $http.post("backend_create.php", $scope.reservation).success(function (data) {
+            /*$http.post("backend_create.php", $scope.reservation).success(function (data) {
                 DayPilot.Modal.close(data);
-            });
+            });*/
+            $http.post("/reservation/create", {
+                name: $scope.reservation.name,
+                start: $scope.reservation.start,
+                end: $scope.reservation.end,
+                resource: $scope.reservation.room
+            }).then(function (data) {
+                DayPilot.Modal.close(data);
+            })
         };
         $scope.cancel = function () {
             DayPilot.Modal.close();
