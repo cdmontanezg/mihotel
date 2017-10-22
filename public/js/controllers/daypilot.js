@@ -108,7 +108,16 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                     loadEvents();
                 }
             };
-            modal.showUrl("new.php?start=" + args.start + "&end=" + args.end + "&resource=" + args.resource);
+
+            var nuevaReserva = {
+                'inicio': args.start,
+                'fin': args.end,
+                'cuarto': args.resource
+            }
+
+            sessionStorage.setItem('nuevaReserva', JSON.stringify(nuevaReserva));
+            
+            modal.showUrl("views/components/nuevaReserva.html");
         },
         onEventClick: function(args) {
             var modal = new DayPilot.Modal();
@@ -199,7 +208,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
         modal.onClosed = function(args) {
             loadResources();
         };
-        //// modal.showUrl("room_new.php");
+        modal.showUrl('views/components/nuevoCuarto.html');
     };
 
     $timeout(function() {
