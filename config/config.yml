@@ -1,0 +1,23 @@
+defaults: &defaults
+  booking_base_uri: "http://192.168.31.4:9001"
+  booking_user: test
+  booking_password: test
+
+  expedia_base_uri: "http://192.168.31.4:9001"
+  expedia_user: test
+  expedia_password: test
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  booking_base_uri: "http://127.0.0.1/"
+  booking_user: test
+  booking_password: test
+
+  expedia_base_uri: "http://192.168.31.4:9001"
+  expedia_user: test
+  expedia_password: test

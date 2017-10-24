@@ -1,0 +1,2 @@
+class ExpediaClient
+end
