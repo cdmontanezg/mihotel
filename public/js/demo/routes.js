@@ -74,11 +74,11 @@ angular
       label: 'Tables'
     }
   })
-  .state('app.components.daypilot', {
+  .state('app.daypilot', {
       url: '/daypilot',
       templateUrl: 'views/components/daypilot.html',
       ncyBreadcrumb: {
-          label: 'Reservation'
+          label: 'Reservas'
       },
       resolve: {
           loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
