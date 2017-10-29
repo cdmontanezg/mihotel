@@ -1,6 +1,7 @@
-angular.module('app').controller('notificacionesController', function notificacionesController($scope, $http) {
+angular.module('app').controller('notificacionesController', function notificacionesController($scope, $http, ngDialog) {
 
   $scope.todasNotificaciones = [];
+  $scope.reserva;
 
   $scope.config = {
     itemsPerPage: 10,
@@ -10,19 +11,14 @@ angular.module('app').controller('notificacionesController', function notificaci
   initController();
 
   function initController() {
-    consultarTodasNotificaciones()
+    filtrarDias(0);
   }
-
-  function consultarTodasNotificaciones() {
-    $http.get('/notification',{params: {hotel_id: 1}})
-      .then(function (response) {
-        $scope.todasNotificaciones = response.data;
-      });
-  }
-
-
 
   $scope.filtrarxDias = function filtrarxDias(dias) {
+    filtrarDias(dias);
+  }
+
+  function filtrarDias(dias) {
     $http.get('/notification',{params: {hotel_id: 1}})
       .then(function (response) {
         notificaciones = response.data;
@@ -38,7 +34,6 @@ angular.module('app').controller('notificacionesController', function notificaci
           }
         }
       });
-
   }
 
   function sumarDias(fecha, dias) {
@@ -55,6 +50,7 @@ angular.module('app').controller('notificacionesController', function notificaci
   }
 
 
+
   // function setPage(page) {
   //   $http.get('/notification',
   //     {
@@ -64,5 +60,24 @@ angular.module('app').controller('notificacionesController', function notificaci
   //       ctrl.getTodasNotificaciones = response.data;
   //     })
   // }
+
+  $scope.abrirReserva = function abrirReserva(idReserva) {
+    obtenerReserva(idReserva);
+    ngDialog.open({
+      template: 'notificaciones/popupReserva.template.html',
+      className: 'ngdialog-theme-default',
+      scope: $scope,
+      width: '50%'
+    });
+  }
+
+  function obtenerReserva(idReserva) {
+    $http.get('/reservation/' + idReserva)
+      .then(function (response) {
+        $scope.reserva = response.data;
+      });
+  }
+
+
 
 });

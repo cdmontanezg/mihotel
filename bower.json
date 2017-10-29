@@ -14,7 +14,8 @@
     "angular-chart.js": "^1.0.3",
     "bootstrap": "4.0.0-beta",
     "at-table" : "latest",
-    "daypilot": "*"
+    "daypilot": "*",
+    "ng-dialog" : "latest"
   },
   "private": true
 }

@@ -28,11 +28,16 @@
                     <td at-implicit at-attribute="nombre_huesped"></td>
                     <td at-implicit at-attribute="descripcion"></td>
                     <td at-implicit at-attribute="fecha" at-sortable at-initial-sorting="desc"></td>
-                        <td at-attribute="canal"><img ng-src="{{obtenerImagenCanal(item.canal)}}"/></td>
+                    <td at-attribute="canal">
+                        <button type="button" ng-click="abrirReserva(item.reservation_id)">
+                            <img ng-src="{{obtenerImagenCanal(item.canal)}}"/>
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
             <at-pagination at-config="config" at-list="todasNotificaciones"></at-pagination>
+
 
         </div>
     </div>

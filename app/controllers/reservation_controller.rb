@@ -55,4 +55,12 @@ class ReservationController < ApplicationController
     render json: [], status: :ok
   end
 
+  def show
+    respond_to do |format|
+      reservation = Reservation.find(params[:id]);
+      format.json { render json: reservation }
+      format.html
+    end
+  end
+
 end
