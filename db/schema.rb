@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 6) do
+ActiveRecord::Schema.define(version: 8) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,16 @@ ActiveRecord::Schema.define(version: 6) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "hotel_channels", force: :cascade do |t|
+    t.string "hotel_channel_id"
+    t.bigint "channel_id"
+    t.bigint "hotel_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_hotel_channels_on_channel_id"
+    t.index ["hotel_id"], name: "index_hotel_channels_on_hotel_id"
   end
 
   create_table "hotels", force: :cascade do |t|
@@ -45,7 +55,9 @@ ActiveRecord::Schema.define(version: 6) do
     t.string "host_email"
     t.datetime "date_from"
     t.datetime "date_to"
+    t.string "channel_reservation_id"
     t.string "status"
+    t.datetime "reservation_date"
     t.bigint "channel_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -57,6 +69,15 @@ ActiveRecord::Schema.define(version: 6) do
     t.bigint "room_id", null: false
     t.index ["reservation_id", "room_id"], name: "index_reservations_rooms_on_reservation_id_and_room_id"
     t.index ["room_id", "reservation_id"], name: "index_reservations_rooms_on_room_id_and_reservation_id"
+  end
+
+  create_table "room_type_channels", force: :cascade do |t|
+    t.integer "beds"
+    t.string "room_channel_id"
+    t.bigint "channel_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_room_type_channels_on_channel_id"
   end
 
   create_table "rooms", force: :cascade do |t|

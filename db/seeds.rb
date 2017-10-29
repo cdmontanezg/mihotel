@@ -12,8 +12,7 @@ channels = Channel.create([
                           ])
 
 hotels = Hotel.create([
-                      { name: 'Casa Blanca', city: 'Bogota', address: 'Calle 52 # 12 - 34', contact_name: 'Maria Ruiz' },
-                      { name: 'La Republica', city: 'Bogota', address: 'Calle 52 # 12 - 35', contact_name: 'Jose Botero'}
+                      { name: 'Casa Blanca', city: 'Bogota', address: 'Calle 52 # 12 - 34', contact_name: 'Maria Ruiz' }
                       ])
 
 rooms = Room.create([
@@ -36,3 +35,13 @@ rooms[0].reservations << reservations[0]
 rooms[1].reservations << reservations[1]
 rooms[2].reservations << reservations[2]
 rooms[4].reservations << reservations[3]
+
+RoomTypeChannel.create ([
+    { beds:1, room_channel_id: '965645', channel: channels[1] },
+    { beds:2, room_channel_id: '965640', channel: channels[1] },
+    { beds:4, room_channel_id: '965650', channel: channels[1] },
+])
+
+HotelChannel.create ([
+    { hotel_channel_id: '15240106', hotel: hotels.first, channel: channels[1] }
+])
