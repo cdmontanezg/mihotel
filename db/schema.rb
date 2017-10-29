@@ -51,10 +51,12 @@ ActiveRecord::Schema.define(version: 6) do
     t.datetime "date_from"
     t.datetime "date_to"
     t.string "status"
+    t.bigint "hotel_id"
     t.bigint "channel_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["channel_id"], name: "index_reservations_on_channel_id"
+    t.index ["hotel_id"], name: "index_reservations_on_hotel_id"
   end
 
   create_table "reservations_rooms", id: false, force: :cascade do |t|
@@ -77,5 +79,6 @@ ActiveRecord::Schema.define(version: 6) do
   add_foreign_key "notifications", "hotels"
   add_foreign_key "notifications", "reservations"
   add_foreign_key "reservations", "channels"
+  add_foreign_key "reservations", "hotels"
   add_foreign_key "rooms", "hotels"
 end

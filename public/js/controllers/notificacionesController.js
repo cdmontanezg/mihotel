@@ -11,7 +11,7 @@ angular.module('app').controller('notificacionesController', function notificaci
   initController();
 
   function initController() {
-    filtrarDias(0);
+    filtrarDias(15);
   }
 
   $scope.filtrarxDias = function filtrarxDias(dias) {

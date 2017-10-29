@@ -1,43 +1,61 @@
-<div class="animated fadeIn">
+<div class="animated fadeIn" ng-controller="tableroController">
     <div class="row">
-        <div class="col-sm-6 col-lg-4">
+        <div class="col-sm-8 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-asterisk icon-bg"></i> Ocupación
+                </div>
+                <div class="card-body">
+
+                    <canvas id="pie1" class="chart chart-pie" chart-data="dataOcupadas" chart-labels="labelsOcupadas">
+                    </canvas>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Notificaciones
+                </div>
+                <div class="card-body" ng-controller="notificacionesController">
+
+
+                    <table class="table table-striped" at-table at-list="todasNotificaciones" at-config="config"
+                           at-paginated>
+                        <thead>
+                        <tr>
+                            <th at-attribute="nombre_huesped">Huesped</th>
+                            <th at-attribute="descripcion">Descripción</th>
+                            <th at-attribute="fecha">Fecha</th>
+                            <th at-attribute="canal">Canal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td at-implicit at-attribute="nombre_huesped"></td>
+                            <td at-implicit at-attribute="descripcion"></td>
+                            <td at-implicit at-attribute="fecha" at-sortable at-initial-sorting="desc"></td>
+                            <td at-attribute="canal">
+                                <img ng-src="{{obtenerImagenCanal(item.canal)}}"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-primary">Ver mas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg">
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-asterisk icon-bg"></i> Ocupación
+                <i class="icon-graph icon-bg"></i>Canales de reserva
             </div>
-            <div class="card-body" ng-controller="tableroController">
-
-                <canvas id="pie1" class="chart chart-pie" chart-data="dataOcupadas" chart-labels="labelsOcupadas">
-                </canvas>
-
+            <div class="card-body">
+                <canvas id="line1" class="chart chart-line" chart-data="dataCanales" chart-labels="labels"
+                        chart-legend="true" chart-series="series" chart-click="onClick"></canvas>
             </div>
-        </div>
-        </div>
-        <div class="col-sm-6 col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <i class="fa fa-asterisk icon-bg"></i> Por liberar
-            </div>
-            <div class="card-body" ng-controller="tableroController">
-
-                <canvas id="pie3" class="chart chart-pie" chart-data="dataporLiberar" chart-labels="labelsporLiberar">
-                </canvas>
-
-            </div>
-        </div>
-        </div>
-        <div class="col-sm-6 col-lg-4">
-        <div class="card">
-            <div class="card-header">
-                <i class="fa fa-asterisk icon-bg"></i> Por ocupar
-            </div>
-            <div class="card-body" ng-controller="tableroController">
-
-                <canvas id="pie4" class="chart chart-pie" chart-data="dataporOcupar" chart-labels="labelsporOcupar">
-                </canvas>
-
-            </div>
-        </div>
         </div>
     </div>
 </div>

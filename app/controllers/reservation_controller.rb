@@ -55,6 +55,13 @@ class ReservationController < ApplicationController
     render json: [], status: :ok
   end
 
+  def index
+    respond_to do |format|
+      format.json { render json: Reservation.where(hotel_id: params[:hotel_id]).order(id: :desc) }
+      format.html
+    end
+  end
+
   def show
     respond_to do |format|
       reservation = Reservation.find(params[:id]);

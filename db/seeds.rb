@@ -26,10 +26,10 @@ rooms = Room.create([
                     ])
 
  reservations = Reservation.create( [
-                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-01', date_to:'2017-10-12', status: 'Confirmed', channel: channels.first },
-                    { host_name: 'Maria Perea', host_email: 'mperea@gmail.com', date_from: '2017-10-12', date_to:'2017-10-18', status: 'Arrived', channel: channels.first },
-                    { host_name: 'Jorge Leon', host_email: 'jleon@gmail.com', date_from: '2017-10-25', date_to:'2017-11-2', status: 'New', channel: channels[1] },
-                    { host_name: 'Luis Garcia', host_email: 'lgarcia@gmail.com', date_from: '2017-10-01', date_to:'2017-10-05', status: 'CheckedOut', channel: channels[1] },
+                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-01', date_to:'2017-10-12', status: 'Confirmed', channel: channels.first, hotel: hotels[0] },
+                    { host_name: 'Maria Perea', host_email: 'mperea@gmail.com', date_from: '2017-10-12', date_to:'2017-10-18', status: 'Arrived', channel: channels.first, hotel: hotels[0]  },
+                    { host_name: 'Jorge Leon', host_email: 'jleon@gmail.com', date_from: '2017-10-25', date_to:'2017-11-2', status: 'New', channel: channels[1], hotel: hotels[0]  },
+                    { host_name: 'Luis Garcia', host_email: 'lgarcia@gmail.com', date_from: '2017-10-01', date_to:'2017-10-05', status: 'CheckedOut', channel: channels[1], hotel: hotels[0]  },
                     ])
 
 notificactions = Notification.create([
