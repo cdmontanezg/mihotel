@@ -11,6 +11,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
         selectMode: "month",
         showMonths: 3,
         skipMonths: 3,
+        locale: "es-es",
         onTimeRangeSelected: function(args) {
             if ($scope.scheduler.visibleStart().getDatePart() <= args.day && args.day < $scope.scheduler.visibleEnd()) {
                 $scope.scheduler.scrollTo(args.day, "fast");  // just scroll
@@ -31,13 +32,12 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
         cellWidthSpec: "Auto",
         eventHeight: 50,
         rowHeaderColumns: [
-            {title: "Room", width: 80},
-            {title: "Capacity", width: 80},
-            {title: "Status", width: 80}
+            {title: "Cuarto", width: 80},
+            {title: "Capacidad", width: 80}
         ],
         onBeforeResHeaderRender: function(args) {
             var beds = function(count) {
-                return count + " bed" + (count > 1 ? "s" : "");
+                return count + " cama" + (count > 1 ? "s" : "");
             };
 
             args.resource.columns[0].html = beds(args.resource.capacity);
@@ -74,7 +74,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                 newEnd: args.newEnd.toString(),
                 newResource: args.newResource
             }).then(function(response) {
-                dp.message(response.data.message);
+                dp.message("Ok");
                 loadEvents();
             });
         },
@@ -85,7 +85,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                 newEnd: args.newEnd.toString(),
                 resource: args.e.resource()
             }).then(function() {
-                dp.message("Resized.");
+                dp.message("Ok");
                 loadEvents();
             });
         },
@@ -93,7 +93,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             $http.post("/reservation/delete", {
                 id: args.e.id()
             }).then(function() {
-                dp.message("Deleted.");
+                dp.message("Eliminada");
                 loadEvents();
             });
         },
@@ -108,7 +108,16 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                     loadEvents();
                 }
             };
-            modal.showUrl("new.php?start=" + args.start + "&end=" + args.end + "&resource=" + args.resource);
+
+            var reservation = {
+                'start': args.start,
+                'end': args.end,
+                'resource': args.resource
+            };
+
+            sessionStorage.setItem('newReservation', JSON.stringify(reservation));
+
+            modal.showUrl("views/components/nuevaReserva.html");
         },
         onEventClick: function(args) {
             var modal = new DayPilot.Modal();
@@ -119,7 +128,9 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                     loadEvents();
                 }
             };
-            modal.showUrl("edit.php?id=" + args.e.id());
+
+            sessionStorage.setItem('reservationId', args.e.id());
+            modal.showUrl("views/components/editarReserva.html");
         },
         onBeforeEventRender: function(args) {
             var start = new DayPilot.Date(args.data.start);
@@ -131,18 +142,20 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
 
             // customize the reservation bar color and tooltip depending on status
             switch (args.e.status) {
+
                 case "New":
                     var in2days = today.addDays(1);
 
                     if (start < in2days) {
                         args.data.barColor = 'red';
-                        status = 'Expired (not confirmed in time)';
+                        status = 'Expirada (no confirmada)';
                     }
                     else {
                         args.data.barColor = 'orange';
-                        status = 'New';
+                        status = 'Nueva';
                     }
                     break;
+
                 case "Confirmed":
                     var arrivalDeadline = today.addHours(18);
 
@@ -152,9 +165,10 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                     }
                     else {
                         args.data.barColor = "green";
-                        status = "Confirmed";
+                        status = "Confirmada";
                     }
                     break;
+
                 case 'Arrived': // arrived
                     var checkoutDeadline = today.addHours(10);
 
@@ -168,29 +182,35 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                         status = "Arrived";
                     }
                     break;
+
                 case 'CheckedOut': // checked out
                     args.data.barColor = "gray";
                     status = "Checked out";
                     break;
+
                 default:
-                    status = "Unexpected state";
+                    status = "";
                     break;
             }
 
+            status = "";
+            args.data.barColor = "green";
+
             // customize the reservation HTML: text, start and end dates
-            args.data.html = args.data.bubbleHtml + args.data.text + " (" + start.toString("M/d/yyyy") + " - " + end.toString("M/d/yyyy") + ")" + "<br /><span style='color:gray'>" + status + "</span>";
+            args.data.html = args.data.bubbleHtml + " " + args.data.text + " (" + start.toString("M/d/yyyy") + " - " + end.toString("M/d/yyyy") + ")" + "<br /><span style='color:gray'>" + status + "</span>";
 
             // reservation tooltip that appears on hover - displays the status text
-            args.e.toolTip = status;
+            args.e.toolTip = args.data.text + " (" + start.toString("M/d/yyyy") + " - " + end.toString("M/d/yyyy") + ")";
 
             // add a bar highlighting how much has been paid already (using an "active area")
             var paid = args.e.paid;
             var paidColor = "#aaaaaa";
+            /*
             args.data.areas = [
                 { bottom: 10, right: 4, html: "<div style='color:" + paidColor + "; font-size: 8pt;'>Paid: " + paid + "%</div>", v: "Visible"},
                 { left: 4, bottom: 8, right: 4, height: 2, html: "<div style='background-color:" + paidColor + "; height: 100%; width:" + paid + "%'></div>" }
             ];
-
+            */
         }
     };
 
@@ -199,11 +219,12 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
         modal.onClosed = function(args) {
             loadResources();
         };
-        //// modal.showUrl("room_new.php");
+        modal.showUrl('views/components/nuevoCuarto.html');
     };
 
     $timeout(function() {
         dp = $scope.scheduler;  // debug
+        dp.locale = "es-es";
         loadEvents(DayPilot.Date.today());
     });
 
