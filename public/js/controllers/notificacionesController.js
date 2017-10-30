@@ -30,7 +30,9 @@ angular.module('app').controller('notificacionesController', function notificaci
           fechaNotificacion.setHours(0,0,0,0);
           fechaInicial.setHours(0,0,0,0);
           if (fechaNotificacion >= fechaInicial){
+            notificaciones[i].fecha = fechaNotificacion;
             $scope.todasNotificaciones.push(notificaciones[i]);
+
           }
         }
       });

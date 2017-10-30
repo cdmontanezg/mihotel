@@ -2,7 +2,7 @@ angular
   .module('app')
   .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$breadcrumbProvider', function ($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $breadcrumbProvider) {
 
-    $urlRouterProvider.otherwise('/dashboard');
+    $urlRouterProvider.otherwise('/tablero');
 
     $ocLazyLoadProvider.config({
       // Set to true if you want to see what and when is dynamically loaded
@@ -51,6 +51,36 @@ angular
         }
       })
       .state('app.main', {
+        url: '/tablero',
+        templateUrl: 'tablero/tablero.template.html',
+        ncyBreadcrumb: {
+          label: 'Tablero',
+        },
+        resolve: {
+          loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+            // you can lazy load files for an existing module
+            return $ocLazyLoad.load({
+              files: ['js/controllers/tableroController.js', 'js/controllers/notificacionesController.js']
+            });
+          }]
+        }
+      })
+      .state('app.notificaciones', {
+        url: '/notificaciones',
+        templateUrl: 'notificaciones/notificaciones.template.html',
+        ncyBreadcrumb: {
+          label: 'Notificaciones',
+        },
+        resolve: {
+          loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+            // you can lazy load files for an existing module
+            return $ocLazyLoad.load({
+              files: ['js/controllers/notificacionesController.js']
+            });
+          }]
+        }
+      })
+      .state('app.tablero', {
         url: '/dashboard',
         templateUrl: 'views/main.html',
         //page title goes here
@@ -117,28 +147,5 @@ angular
         url: '/500',
         templateUrl: 'views/pages/500.html'
       })
-      .state('app.notificaciones', {
-        url: '/notificaciones',
-        templateUrl: 'notificaciones/notificaciones.template.html',
-        resolve: {
-          loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-            // you can lazy load files for an existing module
-            return $ocLazyLoad.load({
-              files: ['js/controllers/notificacionesController.js']
-            });
-          }]
-        }
-      })
-      .state('app.tablero', {
-        url: '/tablero',
-        templateUrl: 'tablero/tablero.template.html',
-        resolve: {
-          loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-            // you can lazy load files for an existing module
-            return $ocLazyLoad.load({
-              files: ['js/controllers/tableroController.js', 'js/controllers/notificacionesController.js']
-            });
-          }]
-        }
-      })
+
   }]);
