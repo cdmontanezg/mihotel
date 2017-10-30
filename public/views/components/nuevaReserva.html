@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>New Reservation</title>
+    <title>Nueva Reserva</title>
     <link type="text/css" rel="stylesheet" href="../../css/layout.css"/>
     <script src="../../bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="../../bower_components/angular/angular.min.js" type="text/javascript"></script>
@@ -11,16 +11,18 @@
 <body>
 <div ng-app="main" ng-controller="NewReservationController" style="padding:10px">
 
-    <h1>New Reservation</h1>
-    <div>Name:</div>
+    <h1>Nueva Reserva</h1>
+    <div>Nombre huesped:</div>
     <div><input type="text" id="name" name="name" ng-model="reservation.name"/></div>
-    <div>Start:</div>
+    <div>Correo electrónico huesped:</div>
+    <div><input type="email" id="email" name="email" ng-model="reservation.email"/></div>
+    <div>Fecha inicio:</div>
     <div><input type="text" id="start" name="start" ng-model="reservation.start" date-format="d/M/yyyy"/> <span
-            ng-show="!reservation.start">Invalid date</span></div>
-    <div>End:</div>
+            ng-show="!reservation.start">Fecha invalida</span></div>
+    <div>Fecha fin:</div>
     <div><input type="text" id="end" name="end" ng-model="reservation.end" date-format="d/M/yyyy"/> <span
-            ng-show="!reservation.end">Invalid date</span></div>
-    <div class="space"><input type="submit" value="Save" ng-click="save()"/> <a href="" id="cancel" ng-click="cancel()">Cancel</a>
+            ng-show="!reservation.end">Fecha invalida</span></div>
+    <div class="space"><input type="submit" value="Guardar" ng-click="save()"/> <a href="" id="cancel" ng-click="cancel()">Cancelar</a>
     </div>
 </div>
 
@@ -32,8 +34,8 @@
 
         $scope.reservation = {
             name: '',
-            start: newReservation.start, // use ISO format for the model
-            end: newReservation.end, // use ISO format for the model
+            start: newReservation.start,
+            end: newReservation.end,
             room: newReservation.resource
         };
         $scope.delete = function () {
@@ -42,13 +44,13 @@
             });
         };
         $scope.save = function () {
-            /*$http.post("backend_create.php", $scope.reservation).success(function (data) {
-                DayPilot.Modal.close(data);
-            });*/
             $http.post("/reservation/create", {
                 name: $scope.reservation.name,
+                email: $scope.reservation.email,
                 start: $scope.reservation.start,
                 end: $scope.reservation.end,
+                status: "New",
+                channel: 1,
                 resource: $scope.reservation.room
             }).then(function (data) {
                 DayPilot.Modal.close(data);
