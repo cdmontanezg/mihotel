@@ -55,6 +55,31 @@ class ReservationController < ApplicationController
     render json: [], status: :ok
   end
 
+  def create
+    @reservation = Reservation.new
+    @reservation.host_name = params[:name]
+    @reservation.host_email = params[:email]
+    @reservation.date_from = params[:start]
+    @reservation.date_to = params[:end]
+    @reservation.status = params[:status]
+    @reservation.channel_id = params[:channel]
+    @reservation.created_at = Time.now
+    @reservation.updated_at = Time.now
+    @reservation.room_ids = [params[:resource]]
+    @reservation.save
+
+    render json: { result: 'OK', message: 'OK' }, status: :ok
+  end
+
+  def retrieve
+    respond_to do |format|
+      @reservation = Reservation.find_by(id: params[:id])
+
+      format.json { render json: @reservation }
+      format.html { render json: @reservation }
+    end
+  end
+
   def index
     respond_to do |format|
       format.json { render json: Reservation.where(hotel_id: params[:hotel_id]).order(id: :desc) }
