@@ -1,9 +1,9 @@
-class BookingClient
+class BookingClient < ChannelClientBase
 
   require 'rest-client'
 
-  @@username =  APP_CONFIG['booking_base_uri']
-  @@password =  APP_CONFIG['booking_base_uri']
+  @@username =  APP_CONFIG['booking_user']
+  @@password =  APP_CONFIG['booking_password']
 
   def get_all_rooms(hotel_id)
 

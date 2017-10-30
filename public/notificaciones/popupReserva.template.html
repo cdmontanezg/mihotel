@@ -1,0 +1,57 @@
+<div class="col-lg">
+    <div class="card">
+        <div class="card-header">
+            <strong>Detalle de la reserva</strong>
+        </div>
+        <div class="card-body" style="overflow-y: auto; max-height:400px;">
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Fecha</label>
+                <div class="col-md-8">
+                    <p class="form-control-static">{{reserva.date_from | date : 'dd/MM/yyyy'}}</p>
+                </div>
+            </div>
+            <hr color="blue" size=3>
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Habitación</label>
+                <div class="col-md-8">
+                    <p class="form-control-static"></p>
+                </div>
+            </div>
+            <hr color="blue" size=3>
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Datos del cliente</label>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Nombre</label>
+                <div class="col-md-8">
+                    <p class="form-control-static">{{reserva.host_name}}</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Correo electrónico</label>
+                <div class="col-md-8">
+                    <p class="form-control-static">{{reserva.host_email}}</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Teléfono</label>
+                <div class="col-md-8">
+                    <p class="form-control-static">{{reserva.host_phone_number}}</p>
+                </div>
+            </div>
+            <hr color="blue" size=3>
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Estado</label>
+                <div class="col-md-8">
+                    <p class="form-control-static">{{reserva.status}}</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 form-control-label">Canal</label>
+                <div class="col-md-8">
+                    <img ng-src="{{obtenerImagenCanal(reserva.channel_id)}}"/></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

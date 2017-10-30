@@ -10,7 +10,7 @@ class NotificationController < ApplicationController
 
   def index
     respond_to do |format|
-      format.json { render json: Notification.all }
+      format.json { render json: Notification.where(hotel_id: params[:hotel_id]) }
       format.html
     end
   end
@@ -36,6 +36,6 @@ class NotificationController < ApplicationController
 
   private
   def notification_params
-    params.require(:notification).permit(:nombreHuesped, :descripcion, :fecha, :canal)
+    params.require(:notification).permit(:nombre_huesped, :descripcion, :fecha, :canal)
   end
 end

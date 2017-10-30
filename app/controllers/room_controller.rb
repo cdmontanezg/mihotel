@@ -4,7 +4,7 @@ class RoomController < ApplicationController
 
   def index
       respond_to do |format|
-        format.json { render json: Room.all }
+        format.json { render json: Room.where(hotel_id: params[:hotel_id])  }
         format.html
       end
   end

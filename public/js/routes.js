@@ -136,7 +136,7 @@ angular
           loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
             // you can lazy load files for an existing module
             return $ocLazyLoad.load({
-              files: ['js/controllers/tableroController.js']
+              files: ['js/controllers/tableroController.js', 'js/controllers/notificacionesController.js']
             });
           }]
         }

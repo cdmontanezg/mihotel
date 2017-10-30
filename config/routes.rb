@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   post '/reservation/create' => 'reservation#create', defaults: { format: :json }
   post '/reservation/retrieve' => 'reservation#retrieve', default: { format: :json }
   resources :room, only: [:index, :show, :create, :destroy], defaults: { format: :json }
+  resources :reservation, only: [:index, :show], defaults: {format: :json}
 end
