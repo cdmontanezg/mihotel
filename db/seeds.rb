@@ -37,9 +37,9 @@ rooms[2].reservations << reservations[2]
 rooms[4].reservations << reservations[3]
 
 RoomTypeChannel.create ([
-    { beds:1, room_channel_id: '965645', channel: channels[1] },
-    { beds:2, room_channel_id: '965640', channel: channels[1] },
-    { beds:4, room_channel_id: '965650', channel: channels[1] },
+    { beds:1, room_channel_id: '201901242', channel: channels[1] },
+    { beds:2, room_channel_id: '201547986', channel: channels[1] },
+    { beds:4, room_channel_id: '201593685', channel: channels[1] },
 ])
 
 HotelChannel.create ([

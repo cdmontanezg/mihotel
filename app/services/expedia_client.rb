@@ -1,5 +1,4 @@
 class ExpediaClient
-  require_relative '../services/models/reservation_channel'
   @@username =  APP_CONFIG['expedia_user']
   @@password =  APP_CONFIG['expedia_password']
 

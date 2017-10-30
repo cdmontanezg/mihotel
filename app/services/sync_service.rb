@@ -1,7 +1,4 @@
 class SyncService
-  require_relative 'expedia_client'
-  require_relative '../services/models/availability_change'
-  require_relative '../services/models/room_availability'
 
   def sync_reservations_and_update_availability()
     hotel = Hotel.first
