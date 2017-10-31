@@ -16,18 +16,16 @@
     <div><input type="text" id="start" name="start" ng-model="reservation.start" date-format="d/M/yyyy"/></div>
     <div>Fecha fin:</div>
     <div><input type="text" id="end" name="end" ng-model="reservation.end" date-format="d/M/yyyy"/></div>
-    <div>Cuarto:</div>
-    <div>
-        <select id="room" name="room" ng-model="reservation.room">
-        </select>
-    </div>
-    <div>Nombre huesped:</div>
+    <div>Nombre:</div>
     <div><input type="text" id="name" name="name" ng-model="reservation.name"/></div>
-    <div>Correo electrónico huesped:</div>
+    <div>Correo electrónico:</div>
     <div><input type="email" id="email" name="email" ng-model="reservation.email"/></div>
+    <div>Teléfono:</div>
+    <div><input type="text" id="phone" name="phone" ng-model="reservation.phone" numbers-only/></div>
     <div>Status:</div>
     <div>
         <select id="status" name="status" ng-model="reservation.status">
+            <option ng-repeat="status in statusList">{{status}}</option>
         </select>
     </div>
     <div class="space"><input type="submit" value="Guardar" ng-click="save()"/> <a href="" id="cancel" ng-click="cancel()">Cancelar</a>
@@ -41,21 +39,24 @@
         var params = {
             id: sessionStorage.getItem('reservationId')
         };
+
+        $scope.statusList = ["Nueva", "Cerrada", "Confirmada", "Cancelada"];
+
         getReservation();
 
-        /*$scope.reservation = {
-            id: '', // <?php print $reservation['id'] ?>,
-            name: '', // '<?php print $reservation['name'] ?>',
-            start: '', // '<?php print $reservation['start'] ?>',  // use ISO format for the model
-            end: '', // '<?php print $reservation['end'] ?>',      // use ISO format for the model
-            room: '', // <?php print $reservation['room_id'] ?>,
-            status: '', // '<?php print $reservation['status'] ?>',
-            paid: '' // <?php print $reservation['paid'] ?>
-        };*/
         $scope.save = function () {
-            $http.post("backend_update.php", $scope.reservation).success(function (data) {
-                DayPilot.Modal.close(data);
+            $http.post("/reservation/update", {
+                id: $scope.reservation.id,
+                newStart: $scope.reservation.start,
+                newEnd: $scope.reservation.end,
+                newName: $scope.reservation.name,
+                newEmail: $scope.reservation.email,
+                newPhone: $scope.reservation.phone,
+                newStatus: $scope.reservation.status
+            }).then(function(response) {
+                DayPilot.Modal.close(response);
             });
+
         };
         $scope.cancel = function () {
             DayPilot.Modal.close();
@@ -69,11 +70,11 @@
                         id: response.data.id,
                         name: response.data.host_name,
                         email: response.data.host_email,
+                        phone: response.data.host_phone_number,
                         start: response.data.date_from,
                         end: response.data.date_to,
                         room: '',
-                        status: '',
-                        paid: ''
+                        status: response.data.status
                     };
                 }
             });
@@ -101,6 +102,27 @@
                         return value && new DayPilot.Date(value).toString(attrs.dateFormat);
                     });
                 }
+            }
+        };
+    });
+
+    app.directive('numbersOnly', function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attr, ngModel) {
+                function fromUser(text) {
+                    if (text) {
+                        var transformedInput = text.replace(/[^0-9]/g, '');
+
+                        if (transformedInput !== text) {
+                            ngModel.$setViewValue(transformedInput);
+                            ngModel.$render();
+                        }
+                        return transformedInput;
+                    }
+                    return undefined;
+                }
+                ngModel.$parsers.push(fromUser);
             }
         };
     });

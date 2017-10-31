@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post '/reservation/delete' => 'reservation#delete', defaults: { format: :json }
   post '/reservation/create' => 'reservation#create', defaults: { format: :json }
   post '/reservation/retrieve' => 'reservation#retrieve', default: { format: :json }
+  post '/reservation/update' => 'reservation#update', default: { format: :json }
   resources :room, only: [:index, :show, :create, :destroy], defaults: { format: :json }
   resources :reservation, only: [:index, :show], defaults: {format: :json}
 end

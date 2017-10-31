@@ -59,6 +59,7 @@ class ReservationController < ApplicationController
     @reservation = Reservation.new
     @reservation.host_name = params[:name]
     @reservation.host_email = params[:email]
+    @reservation.host_phone_number = params[:phone]
     @reservation.date_from = params[:start]
     @reservation.date_to = params[:end]
     @reservation.status = params[:status]
@@ -66,6 +67,10 @@ class ReservationController < ApplicationController
     @reservation.created_at = Time.now
     @reservation.updated_at = Time.now
     @reservation.room_ids = [params[:resource]]
+
+    @room = Room.find_by(id: params[:resource])
+    @reservation.hotel_id = @room.hotel_id
+
     @reservation.save
 
     render json: { result: 'OK', message: 'OK' }, status: :ok
@@ -78,6 +83,20 @@ class ReservationController < ApplicationController
       format.json { render json: @reservation }
       format.html { render json: @reservation }
     end
+  end
+
+  def update
+    @reservation = Reservation.find_by(id: params[:id])
+    @reservation.host_name = params[:newName]
+    @reservation.host_email = params[:newEmail]
+    @reservation.host_phone_number = params[:newPhone]
+    @reservation.date_from = params[:newStart]
+    @reservation.date_to = params[:newEnd]
+    @reservation.status = params[:newStatus]
+    @reservation.updated_at = Time.now
+    @reservation.save
+
+    render json: { result: 'OK', message: 'OK' }, status: :ok
   end
 
   def index
