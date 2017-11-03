@@ -53,7 +53,7 @@
                 newEmail: $scope.reservation.email,
                 newPhone: $scope.reservation.phone,
                 newStatus: $scope.reservation.status
-            }).then(function(response) {
+            }).success(function(response) {
                 DayPilot.Modal.close(response);
             });
 

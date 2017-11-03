@@ -62,7 +62,7 @@
                     status: "Nueva",
                     channel: 3,
                     resource: $scope.reservation.room
-                }).then(function (data) {
+                }).success(function (data) {
                     DayPilot.Modal.close(data);
                 })
             }
