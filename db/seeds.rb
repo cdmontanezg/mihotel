@@ -25,17 +25,17 @@ rooms = Room.create([
                     ])
 
  reservations = Reservation.create( [
-                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-10-01', date_to:'2017-10-12', status: 'Confirmed', channel: channels.first, hotel: hotels[0] },
-                    { host_name: 'Maria Perea', host_email: 'mperea@gmail.com', date_from: '2017-10-12', date_to:'2017-10-18', status: 'Arrived', channel: channels.first, hotel: hotels[0]  },
-                    { host_name: 'Jorge Leon', host_email: 'jleon@gmail.com', date_from: '2017-10-25', date_to:'2017-11-2', status: 'New', channel: channels[1], hotel: hotels[0]  },
-                    { host_name: 'Luis Garcia', host_email: 'lgarcia@gmail.com', date_from: '2017-10-01', date_to:'2017-10-05', status: 'CheckedOut', channel: channels[1], hotel: hotels[0]  },
+                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-11-01', date_to:'2017-11-12', status: 'Confirmed', channel: channels.first, hotel: hotels[0] },
+                    { host_name: 'Maria Perea', host_email: 'mperea@gmail.com', date_from: '2017-11-12', date_to:'2017-11-18', status: 'Arrived', channel: channels.first, hotel: hotels[0]  },
+                    { host_name: 'Jorge Leon', host_email: 'jleon@gmail.com', date_from: '2017-11-25', date_to:'2017-12-2', status: 'New', channel: channels[1], hotel: hotels[0]  },
+                    { host_name: 'Luis Garcia', host_email: 'lgarcia@gmail.com', date_from: '2017-11-01', date_to:'2017-11-05', status: 'CheckedOut', channel: channels[1], hotel: hotels[0]  },
                     ])
 
 notificactions = Notification.create([
-    {nombre_huesped: 'Juan Correa', descripcion: '1 habitación cama doble', fecha: '2017-10-01',canal: 1, hotel: hotels[0], reservation: reservations[0] },
-    {nombre_huesped: 'Maria Perea', descripcion: '1 habitación cama sencilla', fecha: '2017-10-12', canal: 1, hotel: hotels[0], reservation: reservations[1]},
-    {nombre_huesped: 'Jorge Leon', descripcion: '1 habitación cama sencilla', fecha: '2017-10-25', canal: 2, hotel: hotels[0], reservation: reservations[2]},
-    {nombre_huesped: 'Luis Garcia', descripcion: '1 habitación cama doble', fecha: '2017-10-01', canal: 2, hotel: hotels[0], reservation: reservations[3]},
+    {nombre_huesped: 'Juan Correa', descripcion: '1 habitación cama doble', fecha: '2017-11-01',canal: 1, hotel: hotels[0], reservation: reservations[0] },
+    {nombre_huesped: 'Maria Perea', descripcion: '1 habitación cama sencilla', fecha: '2017-11-12', canal: 1, hotel: hotels[0], reservation: reservations[1]},
+    {nombre_huesped: 'Jorge Leon', descripcion: '1 habitación cama sencilla', fecha: '2017-11-25', canal: 2, hotel: hotels[0], reservation: reservations[2]},
+    {nombre_huesped: 'Luis Garcia', descripcion: '1 habitación cama doble', fecha: '2017-11-01', canal: 2, hotel: hotels[0], reservation: reservations[3]},
 ])
 
 rooms[0].reservations << reservations[0]

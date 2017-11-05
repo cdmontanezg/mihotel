@@ -4,74 +4,110 @@ class ReservationController < ApplicationController
 
   def events
     respond_to do |format|
-      @reservations = []
+      reservations = []
       Reservation.where('(date_from >= :start_date OR date_from < :start_date) OR (date_to >= :end_date OR date_to < :end_date)',
                         start_date: params[:start],
                         end_date: params[:end]).find_each do |x|
         x.rooms.each do |r|
-          @reservation = {
+
+          bubble_html = ''
+          channel_id = ''
+
+          unless x.channel.nil?
+            bubble_html = "<span class='" + x.channel.name.gsub('.', '_') + "'> </span>" unless x.channel.nil?
+            channel_id = x.channel.id unless x.channel.nil?
+          end
+
+          reservation = {
             id: x.id,
             text: x.host_name,
             start: x.date_from,
             end: x.date_to,
             resource: r.id,
-            bubbleHtml: "<span class='" +  x.channel.name.gsub('.', '_') +  "'> </span>",
+            bubbleHtml: bubble_html,
             status: x.status,
-            paid: '100'
+            paid: '100',
+            channelId: channel_id
           }
-          @reservations << @reservation
+          reservations << reservation
         end
       end
 
-      format.json { render json: @reservations }
-      format.html { render json: @reservations }
+      format.json { render json: reservations }
+      format.html { render json: reservations }
     end
   end
 
   def resize
-    @reservation = Reservation.find_by(id: params[:id])
-    @reservation.date_from = params[:newStart]
-    @reservation.date_to = params[:newEnd]
-    @reservation.save
+    reservation = Reservation.find_by(id: params[:id])
+    reservation.date_from = params[:newStart]
+    reservation.date_to = params[:newEnd]
+    reservation.save
 
     render json: [], status: :ok
   end
 
   def move
-    @reservation = Reservation.find_by(id: params[:id])
-    @reservation.date_from = params[:newStart]
-    @reservation.date_to = params[:newEnd]
-    @reservation.room_ids = [params[:newResource]]
-    @reservation.save
+    reservation = Reservation.find_by(id: params[:id])
+    room = Room.find_by(id: params[:newResource])
+    availability_change = []
+
+    new_start_date = Date.parse(params[:newStart]).to_date
+    new_end_date = Date.parse(params[:newEnd]).to_date
+
+    if (reservation.date_from != new_start_date) ||
+       (reservation.date_to != new_end_date) ||
+       (reservation.rooms[0].beds != room.beds)
+
+      availability_change << AvailabilityChange.new(reservation.rooms[0].beds, reservation.date_from, reservation.date_to)
+      availability_change << AvailabilityChange.new(room.beds, new_start_date,new_end_date)
+    end
+
+    reservation.date_from = new_start_date
+    reservation.date_to = new_end_date
+    reservation.room_ids = [params[:newResource]]
+    reservation.save
+
+    sync_service = SyncService.new
+    sync_service.delay.sync_channels_availability(availability_change)
 
     render json: { result: 'OK', message: 'OK' }, status: :ok
   end
 
-
   def delete
-    @reservation = Reservation.find_by(id: params[:id])
-    @reservation.destroy
+    reservation = Reservation.find_by(id: params[:id])
+    availability_change = Reservation.try_delete_reservation reservation
+
+    sync_service = SyncService.new
+    sync_service.delay.sync_channels_availability([availability_change])
 
     render json: [], status: :ok
   end
 
   def create
-    @reservation = Reservation.new
-    @reservation.host_name = params[:name]
-    @reservation.host_email = params[:email]
-    @reservation.host_phone_number = params[:phone]
-    @reservation.date_from = params[:start]
-    @reservation.date_to = params[:end]
-    @reservation.status = params[:status]
-    @reservation.channel_id = params[:channel]
-    @reservation.created_at = Time.now
-    @reservation.updated_at = Time.now
-    @reservation.room_ids = [params[:resource]]
+    new_start_date = Date.parse(params[:start]).to_date
+    new_end_date = Date.parse(params[:end]).to_date
 
-    @room = Room.find_by(id: params[:resource])
-    @reservation.hotel_id = @room.hotel_id
+    reservation = Reservation.new
+    reservation.host_name = params[:name]
+    reservation.host_email = params[:email]
+    reservation.host_phone_number = params[:phone]
+    reservation.date_from = new_start_date
+    reservation.date_to = new_end_date
+    reservation.status = params[:status]
+    reservation.channel_id = params[:channel]
+    reservation.created_at = Time.now
+    reservation.updated_at = Time.now
+    reservation.room_ids = [params[:resource]]
 
-    @reservation.save
+    room = Room.find_by(id: params[:resource])
+    reservation.hotel_id = room.hotel_id
+
+    reservation.save
+
+    availability_change = AvailabilityChange.new(reservation.rooms[0].beds, reservation.date_from, reservation.date_to)
+    sync_service = SyncService.new
+    sync_service.delay.sync_channels_availability([availability_change])
 
     render json: { result: 'OK', message: 'OK' }, status: :ok
   end
@@ -86,15 +122,29 @@ class ReservationController < ApplicationController
   end
 
   def update
-    @reservation = Reservation.find_by(id: params[:id])
-    @reservation.host_name = params[:newName]
-    @reservation.host_email = params[:newEmail]
-    @reservation.host_phone_number = params[:newPhone]
-    @reservation.date_from = params[:newStart]
-    @reservation.date_to = params[:newEnd]
-    @reservation.status = params[:newStatus]
-    @reservation.updated_at = Time.now
-    @reservation.save
+    reservation = Reservation.find_by(id: params[:id])
+    availability_change = []
+
+    new_start_date = Date.parse(params[:newStart]).to_date
+    new_end_date = Date.parse(params[:newEnd]).to_date
+
+    if (reservation.date_from != new_start_date) ||
+       (reservation.date_to != new_end_date)
+      availability_change << AvailabilityChange.new(reservation.rooms[0].beds, reservation.date_from, reservation.date_to)
+      availability_change << AvailabilityChange.new(reservation.rooms[0].beds, new_start_date,new_end_date)
+    end
+
+    reservation.host_name = params[:newName]
+    reservation.host_email = params[:newEmail]
+    reservation.host_phone_number = params[:newPhone]
+    reservation.date_from = new_start_date
+    reservation.date_to = new_end_date
+    reservation.status = params[:newStatus]
+    reservation.updated_at = Time.now
+    reservation.save
+
+    sync_service = SyncService.new
+    sync_service.delay.sync_channels_availability(availability_change)
 
     render json: { result: 'OK', message: 'OK' }, status: :ok
   end

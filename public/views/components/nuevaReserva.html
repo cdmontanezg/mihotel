@@ -60,9 +60,8 @@
                     start: $scope.reservation.start,
                     end: $scope.reservation.end,
                     status: "Nueva",
-                    channel: 3,
                     resource: $scope.reservation.room
-                }).success(function (data) {
+                }).then(function (data) {
                     DayPilot.Modal.close(data);
                 })
             }

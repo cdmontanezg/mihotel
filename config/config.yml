@@ -7,6 +7,8 @@ defaults: &defaults
   expedia_user: test
   expedia_password: test
 
+  worker_interval: 120
+
 development:
   <<: *defaults
 

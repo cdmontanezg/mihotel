@@ -39,7 +39,7 @@ class RoomAvailability
 
   def self.find_available_room(beds, start_date, end_date, hotel_id)
 
-    occupied_rooms = Room.joins(:reservations).where('hotel_id = :hotel_id AND beds = :beds AND reservations.date_to > :start_date AND :end_date > reservations.date_from',
+    occupied_rooms = Room.joins(:reservations).where('rooms.hotel_id = :hotel_id AND beds = :beds AND reservations.date_to > :start_date AND :end_date > reservations.date_from',
                                                    hotel_id: hotel_id, beds: beds, start_date: start_date, end_date: end_date)
 
     room = Room.where('hotel_id = :hotel_id AND beds = :beds', hotel_id: hotel_id, beds: beds).where.not(id: occupied_rooms).first
