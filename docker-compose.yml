@@ -2,7 +2,7 @@ version: '2'
 
 services:
   pgdatabase:
-    image: 'postgres:10.0-alpine'
+    image: 'postgres:alpine'
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'admin'
@@ -19,6 +19,19 @@ services:
     build: .
     ports:
       - '3000:3000'
+    volumes:
+      - '.:/app'
+    env_file:
+      - '.env'
+
+  worker:
+    environment:
+      PGHOST: pgdatabase
+    depends_on:
+      - 'pgdatabase'
+    build: 
+      context: .
+      dockerfile: Dockerfile-worker
     volumes:
       - '.:/app'
     env_file:

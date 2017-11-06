@@ -2,7 +2,12 @@
 FROM nginx
 
 # install essential Linux packages
-RUN apt-get update -qq && apt-get -y install apache2-utils
+RUN apt-get update -qq && apt-get -y install apache2-utils curl gnupg git
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get -y install nodejs
+
+# install bower
+RUN npm install -g bower
 
 # establish where Nginx should look for files
 ENV RAILS_ROOT /var/www/mihotel
@@ -15,6 +20,10 @@ RUN mkdir log
 
 # copy over static assets
 COPY public public/
+COPY bower.json .bowerrc ./
+
+# install bower components
+RUN bower install --allow-root
 
 # copy our Nginx config template
 COPY config/nginx.conf /tmp/docker_example.nginx

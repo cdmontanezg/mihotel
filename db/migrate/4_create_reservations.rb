@@ -8,6 +8,7 @@ class CreateReservations < ActiveRecord::Migration[5.1]
       t.datetime :date_to
       t.string :channel_reservation_id
       t.string :status
+      t.string :confirmation_number
       t.datetime :reservation_date
 
       t.belongs_to :hotel, index: true, foreign_key: true

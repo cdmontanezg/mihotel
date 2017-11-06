@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 99) do
     t.datetime "date_to"
     t.string "channel_reservation_id"
     t.string "status"
+    t.string "confirmation_number"
     t.datetime "reservation_date"
     t.bigint "hotel_id"
     t.bigint "channel_id"

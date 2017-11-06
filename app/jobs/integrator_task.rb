@@ -1,6 +1,6 @@
 class IntegratorTask
   include Delayed::RecurringJob
-  run_every 5.minutes
+  run_every 4.minutes
   queue 'intg-jobs'
 
   require_relative '../services/sync_service'

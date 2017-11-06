@@ -1,5 +1,5 @@
 var dp;
-var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($scope, $timeout, $http) {
+var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($scope, $timeout, $http, $interval) {
 
     $scope.roomType = "0";
 
@@ -103,8 +103,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                 dp.clearSelection();
 
                 // reload all events
-                var data = this.result;
-                if (data && data.result === "OK") {
+                if (this.result && this.result.data && this.result.data.result === "OK") {
                     loadEvents();
                 }
             };
@@ -123,8 +122,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             var modal = new DayPilot.Modal();
             modal.closed = function() {
                 // reload all events
-                var data = this.result;
-                if (data && data.result === "OK") {
+                if (this.result && this.result.data && this.result.data.result === "OK") {
                     loadEvents();
                 }
             };
@@ -202,6 +200,12 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             // reservation tooltip that appears on hover - displays the status text
             args.e.toolTip = args.data.text + " (" + start.toString("M/d/yyyy") + " - " + end.toString("M/d/yyyy") + ")";
 
+            var fromChannel = args.data.channelId != "";
+
+            args.e.moveDisabled = fromChannel;
+            args.e.deleteDisabled  = fromChannel;
+            args.e.resizeDisabled   = fromChannel;
+
             // add a bar highlighting how much has been paid already (using an "active area")
             var paid = args.e.paid;
             var paidColor = "#aaaaaa";
@@ -222,10 +226,19 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
         modal.showUrl('views/components/nuevoCuarto.html');
     };
 
+    //timer callback
+    var stop = $interval(function() {
+        loadEvents();
+    }, 10000);
+
     $timeout(function() {
         dp = $scope.scheduler;  // debug
         dp.locale = "es-es";
         loadEvents(DayPilot.Date.today());
+    });
+
+    $scope.$on('$destroy', function() {
+        $interval.cancel(stop);
     });
 
     // loads events; switches the Scheduler visible range if "day" supplied

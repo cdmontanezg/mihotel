@@ -15,18 +15,13 @@ WORKDIR $RAILS_ROOT
 # Gems:
 COPY Gemfile Gemfile.lock ./
 RUN bundle install --binstubs
-# RUN npm install -g bower
 
-COPY config/puma.rb config/puma.rb
- 
 # Copy the main application.
 COPY . .
-#RUN bower install --allow-root
-
-EXPOSE 3000
 
 LABEL maintainer="Anonymous"
 
-# The default command that gets ran will be to start the Puma server.
-# CMD puma -C config/puma.rb
-CMD bundle exec puma -C config/puma.rb
+# The default command that gets ran will be to start the Worker.
+CMD bundle exec rake jobs:clear
+CMD bundle exec rake recurring:init
+CMD bundle exec rake jobs:work
