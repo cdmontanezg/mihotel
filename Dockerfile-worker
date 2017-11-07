@@ -21,7 +21,9 @@ COPY . .
 
 LABEL maintainer="Anonymous"
 
+ENV RAILS_ENV production
+ENV RACK_ENV production
+
 # The default command that gets ran will be to start the Worker.
-CMD bundle exec rake jobs:clear
-CMD bundle exec rake recurring:init
-CMD bundle exec rake jobs:work
+# CMD bundle exec rake recurring:init
+CMD bundle exec rake db:create db:migrate jobs:clear recurring:init jobs:work

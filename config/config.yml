@@ -20,6 +20,7 @@ production:
   booking_user: test
   booking_password: test
 
-  expedia_base_uri: "http://192.168.31.4:9001"
-  expedia_user: test
-  expedia_password: test
+  expedia_base_uri: "https://services.expediapartnercentral.com"
+  expedia_user: <%= ENV.fetch("EXPEDIA_USR") { 'testuser' } %>
+  expedia_password: <%= ENV.fetch("EXPEDIA_PWD") { 'testpass' } %>
+  worker_interval: 240

@@ -27,6 +27,9 @@ EXPOSE 3000
 
 LABEL maintainer="Anonymous"
 
+ENV RAILS_ENV production
+ENV RACK_ENV production
+
 # The default command that gets ran will be to start the Puma server.
 # CMD puma -C config/puma.rb
 CMD bundle exec puma -C config/puma.rb

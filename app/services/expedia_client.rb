@@ -12,7 +12,10 @@ class ExpediaClient
       end
     end
 
-    response = RestClient.post service_url, builder.to_xml
+    xml_request = builder.to_xml
+    Rails.logger.debug "get_new_reservations req: #{xml_request}"
+    response = RestClient.post service_url, xml_request
+    Rails.logger.debug "get_new_reservations resp: #{response}"
     parse_reservation_response response
   end
 
@@ -32,7 +35,10 @@ class ExpediaClient
       end
     end
 
-    response = RestClient.post service_url, builder.to_xml
+    xml_request = builder.to_xml
+    Rails.logger.debug "update_room_availability req: #{xml_request}"
+    response = RestClient.post service_url, xml_request
+    Rails.logger.debug "update_room_availability resp: #{response}"
     response
   end
 
@@ -54,7 +60,10 @@ class ExpediaClient
       end
     end
 
-    response = RestClient.post service_url, builder.to_xml
+    xml_request = builder.to_xml
+    Rails.logger.debug "confirm_reservations req: #{xml_request}"
+    response = RestClient.post service_url, xml_request
+    Rails.logger.debug "confirm_reservations resp: #{response}"
     response
   end
 
