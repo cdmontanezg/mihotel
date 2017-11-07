@@ -13,9 +13,9 @@
 
     <h1>Editar Reserva</h1>
     <div>Fecha inicio:</div>
-    <div><input type="date" id="start" name="start" ng-model="reservation.start" date-format="yyyy-MM-dd"/></div>
+    <div><input type="date" id="start" name="start" ng-model="reservation.start"/></div>
     <div>Fecha fin:</div>
-    <div><input type="date" id="end" name="end" ng-model="reservation.end" date-format="yyyy-MM-dd"/></div>
+    <div><input type="date" id="end" name="end" ng-model="reservation.end"/></div>
     <div>Nombre:</div>
     <div><input type="text" id="name" name="name" ng-model="reservation.name"/></div>
     <div>Correo electrónico:</div>
@@ -65,14 +65,13 @@
         function getReservation() {
             $http.post("/reservation/retrieve", params).then(function (response) {
                 if (response.data) {
-                    console.log(response.data);
                     $scope.reservation = {
                         id: response.data.id,
                         name: response.data.host_name,
                         email: response.data.host_email,
                         phone: response.data.host_phone_number,
-                        start: response.data.date_from,
-                        end: response.data.date_to,
+                        start: new Date(response.data.date_from),
+                        end: new Date(response.data.date_to),
                         room: '',
                         status: response.data.status
                     };

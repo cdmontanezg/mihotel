@@ -25,10 +25,10 @@
     <div>Teléfono:</div>
     <div><input type="text" id="phone" name="phone" ng-model="reservation.phone" numbers-only/></div>
     <div>Fecha inicio:</div>
-    <div><input type="date" id="start" name="start" ng-model="reservation.start" date-format="yyyy-MM-dd"/> <span
+    <div><input type="date" id="start" name="start" ng-model="reservation.start"/> <span
             ng-show="!reservation.start">Fecha invalida</span></div>
     <div>Fecha fin:</div>
-    <div><input type="date" id="end" name="end" ng-model="reservation.end" date-format="yyyy-MM-dd"/> <span
+    <div><input type="date" id="end" name="end" ng-model="reservation.end"/> <span
             ng-show="!reservation.end">Fecha invalida</span></div>
     <div class="space"><input type="submit" value="Guardar" ng-click="save()"/> <a href="" id="cancel" ng-click="cancel()">Cancelar</a>
     </div>
@@ -42,8 +42,8 @@
 
         $scope.reservation = {
             name: '',
-            start: newReservation.start,
-            end: newReservation.end,
+            start: new Date(newReservation.start),
+            end: new Date(newReservation.end),
             room: newReservation.resource
         };
         $scope.delete = function () {

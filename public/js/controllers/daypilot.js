@@ -109,8 +109,8 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             };
 
             var reservation = {
-                'start': args.start,
-                'end': args.end,
+                'start': args.start.toString(),
+                'end': args.end.toString(),
                 'resource': args.resource
             };
 
