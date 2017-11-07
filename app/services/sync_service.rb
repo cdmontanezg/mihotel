@@ -6,7 +6,11 @@ class SyncService
     hotel_channel = hotel.hotel_channels.where(channel_id: channel.id).first
 
     changes = sync_reservations channel, client, hotel, hotel_channel
-    client.confirm_reservations hotel_channel.hotel_channel_id, changes[:confirmations]
+
+    unless changes[:confirmations].length == 0
+      client.confirm_reservations hotel_channel.hotel_channel_id, changes[:confirmations]
+    end
+
     sync_rooms_availability client, channel, hotel, hotel_channel, changes[:availability]
   end
 

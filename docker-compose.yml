@@ -36,6 +36,7 @@ services:
       - '.:/app'
     env_file:
       - '.env'
+#    command: bundle exec rake db:create db:migrate jobs:clear recurring:init jobs:work
 
   web:
     # set the build context to the root of the Rails app
