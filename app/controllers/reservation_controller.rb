@@ -88,28 +88,41 @@ class ReservationController < ApplicationController
     new_start_date = Date.parse(params[:start]).to_date
     new_end_date = Date.parse(params[:end]).to_date
 
-    reservation = Reservation.new
-    reservation.host_name = params[:name]
-    reservation.host_email = params[:email]
-    reservation.host_phone_number = params[:phone]
-    reservation.date_from = new_start_date
-    reservation.date_to = new_end_date
-    reservation.status = params[:status]
-    reservation.channel_id = params[:channel]
-    reservation.created_at = Time.now
-    reservation.updated_at = Time.now
-    reservation.room_ids = [params[:resource]]
+    actual_reservation = Reservation.where('(date_from BETWEEN ? AND ?)
+                                          OR (date_to BETWEEN ? AND ?)',
+                                          new_start_date.beginning_of_day,
+                                          new_end_date.end_of_day,
+                                          new_start_date.beginning_of_day,
+                                          new_end_date.end_of_day)
 
-    room = Room.find_by(id: params[:resource])
-    reservation.hotel_id = room.hotel_id
+    if actual_reservation.empty?
+      reservation = Reservation.new
+      reservation.host_name = params[:name]
+      reservation.host_email = params[:email]
+      reservation.host_phone_number = params[:phone]
+      reservation.date_from = new_start_date
+      reservation.date_to = new_end_date
+      reservation.status = params[:status]
+      reservation.channel_id = params[:channel]
+      reservation.created_at = Time.now
+      reservation.updated_at = Time.now
+      reservation.room_ids = [params[:resource]]
 
-    reservation.save
+      room = Room.find_by(id: params[:resource])
+      reservation.hotel_id = room.hotel_id
 
-    availability_change = AvailabilityChange.new(reservation.rooms[0].beds, reservation.date_from, reservation.date_to)
-    sync_service = SyncService.new
-    sync_service.delay.sync_channels_availability([availability_change])
+      reservation.save
 
-    render json: { result: 'OK', message: 'OK' }, status: :ok
+      availability_change = AvailabilityChange.new(reservation.rooms[0].beds,
+                                                   reservation.date_from,
+                                                   reservation.date_to)
+      sync_service = SyncService.new
+      sync_service.delay.sync_channels_availability([availability_change])
+
+      render json: { result: 'OK', message: 'OK' }, status: :ok
+    else
+      render json: { result: 'Error', message: 'Error' }, status: :ok
+    end
   end
 
   def retrieve

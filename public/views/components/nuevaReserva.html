@@ -30,7 +30,7 @@
     <div>Fecha fin:</div>
     <div><input type="date" id="end" name="end" ng-model="reservation.end"/> <span
             ng-show="!reservation.end">Fecha invalida</span></div>
-    <div class="space"><input type="submit" value="Guardar" ng-click="save()"/> <a href="" id="cancel" ng-click="cancel()">Cancelar</a>
+    <div class="space"><input type="submit" value="Guardar" ng-click="save()"/> <a href="" id="cancel" ng-click="cancel()">Salir</a>
     </div>
 </div>
 
@@ -62,6 +62,9 @@
                     status: "Nueva",
                     resource: $scope.reservation.room
                 }).then(function (data) {
+
+
+
                     DayPilot.Modal.close(data);
                 })
             }
