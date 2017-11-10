@@ -88,15 +88,18 @@ class ReservationController < ApplicationController
     new_start_date = Date.parse(params[:start]).to_date
     new_end_date = Date.parse(params[:end]).to_date
 
+    actual_reservation = Reservation.joins(:rooms).where(
+      '((date_from BETWEEN ? AND ?)
+      OR (date_to BETWEEN ? AND ?))
+      AND rooms.id = ?',
+      new_start_date.beginning_of_day,
+      new_end_date.end_of_day,
+      new_start_date.beginning_of_day,
+      new_end_date.end_of_day,
+      params[:resource]
+    )
 
-#    actual_reservation = Reservation.where('(date_from BETWEEN ? AND ?)
-#                                          OR (date_to BETWEEN ? AND ?)',
-#                                          new_start_date.beginning_of_day,
-#                                          new_end_date.end_of_day,
-#                                          new_start_date.beginning_of_day,
-#                                          new_end_date.end_of_day)
-
-#    if actual_reservation.empty?
+    if actual_reservation.empty?
       reservation = Reservation.new
       reservation.host_name = params[:name]
       reservation.host_email = params[:email]
@@ -121,9 +124,9 @@ class ReservationController < ApplicationController
       sync_service.delay.sync_channels_availability([availability_change])
 
       render json: { result: 'OK', message: 'OK' }, status: :ok
-#    else
-#      render json: { result: 'Error', message: 'Error' }, status: :ok
-#    end
+    else
+      render json: { result: 'Error', message: 'Error' }, status: :ok
+    end
   end
 
   def retrieve
@@ -141,6 +144,8 @@ class ReservationController < ApplicationController
 
     new_start_date = Date.parse(params[:newStart]).to_date
     new_end_date = Date.parse(params[:newEnd]).to_date
+
+
 
     if (reservation.date_from != new_start_date) ||
        (reservation.date_to != new_end_date)
