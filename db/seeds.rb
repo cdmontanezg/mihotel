@@ -25,7 +25,7 @@ rooms = Room.create([
                     ])
 
  reservations = Reservation.create( [
-                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-11-01', date_to:'2017-11-12', status: 'Confirmed', channel: channels.first, hotel: hotels[0] },
+                    { host_name: 'Juan Correa', host_email: 'jcorrea@gmail.com', date_from: '2017-11-01', date_to:'2017-11-09', status: 'Confirmed', channel: channels.first, hotel: hotels[0] },
                     { host_name: 'Maria Perea', host_email: 'mperea@gmail.com', date_from: '2017-11-12', date_to:'2017-11-18', status: 'Arrived', channel: channels.first, hotel: hotels[0]  },
                     { host_name: 'Jorge Leon', host_email: 'jleon@gmail.com', date_from: '2017-11-25', date_to:'2017-12-2', status: 'New', channel: channels[1], hotel: hotels[0]  },
                     { host_name: 'Luis Garcia', host_email: 'lgarcia@gmail.com', date_from: '2017-11-01', date_to:'2017-11-05', status: 'CheckedOut', channel: channels[1], hotel: hotels[0]  },
@@ -44,11 +44,11 @@ rooms[2].reservations << reservations[2]
 rooms[4].reservations << reservations[3]
 
 RoomTypeChannel.create ([
-    { beds:1, room_channel_id: '201901242', channel: channels[1] },
-    { beds:2, room_channel_id: '201547986', channel: channels[1] },
-    { beds:4, room_channel_id: '201593685', channel: channels[1] },
+    { beds:1, room_channel_id: '201785174', channel: channels[1] },
+    { beds:2, room_channel_id: '201785176', channel: channels[1] },
+    { beds:4, room_channel_id: '202286502', channel: channels[1] },
 ])
 
 HotelChannel.create ([
-    { hotel_channel_id: '15240106', hotel: hotels.first, channel: channels[1] }
+    { hotel_channel_id: '16636818', hotel: hotels.first, channel: channels[1] }
 ])

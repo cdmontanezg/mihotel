@@ -145,14 +145,15 @@ class SyncService
     range = nil
 
     new_availability.sort_by { |o| [o.beds, o.date] }.each do |c|
-      if range.nil?
-        range = RoomAvailability.new(c.beds, c.date, c.availability)
-      elsif range.beds != c.beds || range.availability != c.availability || range.end_date + 1.day != c.date
-        ranges << range
-        range = RoomAvailability.new(c.beds, c.date, c.availability)
+      if c.date >= DateTime.now.to_date
+        if range.nil?
+          range = RoomAvailability.new(c.beds, c.date, c.availability)
+        elsif range.beds != c.beds || range.availability != c.availability || range.end_date + 1.day != c.date
+          ranges << range
+          range = RoomAvailability.new(c.beds, c.date, c.availability)
+        end
+        range.end_date = c.date
       end
-
-      range.end_date = c.date
     end
 
     ranges << range unless range.nil?
