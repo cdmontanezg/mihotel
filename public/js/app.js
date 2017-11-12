@@ -11,23 +11,40 @@ var grayLight =     '#818a91';
 var grayLighter =   '#d1d4d7';
 var grayLightest =  '#f8f9fa';
 
-angular
+var app = angular
 .module('app', [
-  'ui.router',
-  'oc.lazyLoad',
-  'ncy-angular-breadcrumb',
-  'angular-loading-bar',
-  'angular-table',
-  'ngDialog'
+    'ui.router',
+    'oc.lazyLoad',
+    'ncy-angular-breadcrumb',
+    'angular-loading-bar',
+    'angular-table',
+    'ngDialog',
+    'ng-token-auth'
 ])
-.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
-  cfpLoadingBarProvider.includeSpinner = false;
-  cfpLoadingBarProvider.latencyThreshold = 1;
+.config(['cfpLoadingBarProvider', '$authProvider', function(cfpLoadingBarProvider, $authProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+    cfpLoadingBarProvider.latencyThreshold = 1;
+    $authProvider.configure({
+        apiUrl: '/api'
+    });
 }])
 .run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
   $rootScope.$on('$stateChangeSuccess',function(){
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   });
+
+    $rootScope.$on('auth:login-success', function() {
+        $state.go('app.main');
+    });
+    $rootScope.$on('auth:invalid', function() {
+        $state.go('appSimple.login');
+    });
+    $rootScope.$on('auth:validation-error', function() {
+        $state.go('appSimple.login');
+    });
+    $rootScope.$on('auth:logout-success', function() {
+        $state.go('appSimple.login');
+    });
   $rootScope.$state = $state;
   return $rootScope.$stateParams = $stateParams;
 }]);

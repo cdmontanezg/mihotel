@@ -1,6 +1,10 @@
 angular
 .module('app')
-.config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$breadcrumbProvider', function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $breadcrumbProvider) {
+.config(['$stateProvider',
+    '$urlRouterProvider',
+    '$ocLazyLoadProvider',
+    '$breadcrumbProvider',
+    function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $breadcrumbProvider) {
   $stateProvider
   .state('app.icons', {
     url: "/icons",
@@ -81,6 +85,9 @@ angular
           label: 'Reservas'
       },
       resolve: {
+          auth: function($auth) {
+              return $auth.validateUser();
+          },
           loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
               // you can lazy load controllers
               return $ocLazyLoad.load({

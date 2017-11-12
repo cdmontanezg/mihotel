@@ -7,6 +7,9 @@
     <script src="../../bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="../../bower_components/angular/angular.min.js" type="text/javascript"></script>
     <script src="../../bower_components/daypilot/daypilot-all.min.js" type="text/javascript"></script>
+
+    <script src="../../bower_components/angular-cookie/angular-cookie.min.js"></script>
+    <script src="../../bower_components/ng-token-auth/dist/ng-token-auth.min.js"></script>
 </head>
 <body>
 <div ng-app="main" ng-controller="EditReservationController" style="padding:10px">
@@ -34,7 +37,13 @@
 </div>
 
 <script type="text/javascript">
-    var app = angular.module('main', ['daypilot']).controller('EditReservationController', function ($scope, $timeout, $http) {
+    var app = angular.module('main', ['daypilot', 'ng-token-auth'])
+        .config(['$authProvider', function($authProvider) {
+            $authProvider.configure({
+                apiUrl: '/api'
+            });
+        }])
+        .controller('EditReservationController', function ($scope, $timeout, $http) {
 
         var params = {
             id: sessionStorage.getItem('reservationId')
@@ -45,7 +54,7 @@
         getReservation();
 
         $scope.save = function () {
-            $http.post("/reservation/update", {
+            $http.post("/api/reservation/update", {
                 id: $scope.reservation.id,
                 newStart: $scope.reservation.start,
                 newEnd: $scope.reservation.end,
@@ -63,7 +72,7 @@
         };
 
         function getReservation() {
-            $http.post("/reservation/retrieve", params).then(function (response) {
+            $http.post("/api/reservation/retrieve", params).then(function (response) {
                 if (response.data) {
                     $scope.reservation = {
                         id: response.data.id,

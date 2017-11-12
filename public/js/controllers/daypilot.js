@@ -68,7 +68,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             }];
         },
         onEventMoved: function (args) {
-            $http.post("/reservation/move", {
+            $http.post("/api/reservation/move", {
                 id: args.e.id(),
                 newStart: args.newStart.toString(),
                 newEnd: args.newEnd.toString(),
@@ -79,7 +79,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             });
         },
         onEventResized: function (args) {
-            $http.post("/reservation/resize", {
+            $http.post("/api/reservation/resize", {
                 id: args.e.id(),
                 newStart: args.newStart.toString(),
                 newEnd: args.newEnd.toString(),
@@ -90,7 +90,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             });
         },
         onEventDeleted: function(args) {
-            $http.post("/reservation/delete", {
+            $http.post("/api/reservation/delete", {
                 id: args.e.id()
             }).then(function() {
                 dp.message("Eliminada");
@@ -255,7 +255,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             end: to.toString()
         };
 
-        $http.post("/reservation/events", params).then(function(response) {
+        $http.post("/api/reservation/events", params).then(function(response) {
             if (day) {
                 $scope.schedulerConfig.timeline = getTimeline(day);
                 $scope.schedulerConfig.scrollTo = day;
@@ -270,7 +270,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
         var params = {
             capacity: $scope.roomType
         };
-        $http.post("/room/available", params, {headers:{'Content-Type': 'application/json'}}).then(function(response) {
+        $http.post("/api/room/available", params, {headers:{'Content-Type': 'application/json'}}).then(function(response) {
             $scope.schedulerConfig.resources = response.data;
             $scope.schedulerConfig.visible = true;
         });

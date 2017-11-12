@@ -9,7 +9,7 @@ angular.module('app').controller('tableroController', function tableroController
   }
 
   function obtenerCuartosHotel() {
-    $http.get('/room',{params: {hotel_id: 1}})
+    $http.get('/api/room',{params: {hotel_id: 1}})
       .then(function (response) {
         cuartos = response.data;
         ocupados = 0;
@@ -27,7 +27,7 @@ angular.module('app').controller('tableroController', function tableroController
   }
 
   function obtenerReservasHotel() {
-    $http.get('/reservation',{params: {hotel_id: 1}})
+    $http.get('/api/reservation',{params: {hotel_id: 1}})
       .then(function (response) {
         reservas = response.data;
         arregloDias = [];

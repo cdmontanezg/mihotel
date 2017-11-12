@@ -36,7 +36,7 @@
             /*$http.post("backend_room_create.php", $scope.room).success(function(data) {
                 DayPilot.Modal.close(data);
             });*/
-            $http.post("/room/create", {
+            $http.post("/api/room/create", {
                 beds: 2,
                 hotel_id: 1
             }).then(function (response) {

@@ -165,7 +165,7 @@ class SyncService
                           channel_id: channel.id).find_each do |x|
 
       new_availability.each do |c|
-        c.room_channel_id = x.room_channel_id if c.beds = x.beds
+        c.room_channel_id = x.room_channel_id if c.beds == x.beds
       end
     end
 

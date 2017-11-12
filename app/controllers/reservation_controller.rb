@@ -1,4 +1,5 @@
 class ReservationController < ApplicationController
+  before_action :authenticate_user!
   respond_to :json
   protect_from_forgery unless: -> { request.format.json? }
 
@@ -40,9 +41,26 @@ class ReservationController < ApplicationController
 
   def resize
     reservation = Reservation.find_by(id: params[:id])
-    reservation.date_from = params[:newStart]
-    reservation.date_to = params[:newEnd]
+    room = Room.find_by(id: params[:resource])
+    availability_change = []
+
+    new_start_date = Date.parse(params[:newStart]).to_date
+    new_end_date = Date.parse(params[:newEnd]).to_date
+
+    if (reservation.date_from != new_start_date) ||
+        (reservation.date_to != new_end_date) ||
+        (reservation.rooms[0].beds != room.beds)
+
+      availability_change << AvailabilityChange.new(reservation.rooms[0].beds, reservation.date_from, reservation.date_to)
+      availability_change << AvailabilityChange.new(room.beds, new_start_date,new_end_date)
+    end
+
+    reservation.date_from = new_start_date
+    reservation.date_to = new_end_date
     reservation.save
+
+    sync_service = SyncService.new
+    sync_service.delay.sync_channels_availability(availability_change)
 
     render json: [], status: :ok
   end
