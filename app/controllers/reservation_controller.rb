@@ -88,18 +88,7 @@ class ReservationController < ApplicationController
     new_start_date = Date.parse(params[:start]).to_date
     new_end_date = Date.parse(params[:end]).to_date
 
-    actual_reservation = Reservation.joins(:rooms).where(
-      '((date_from BETWEEN ? AND ?)
-      OR (date_to BETWEEN ? AND ?))
-      AND rooms.id = ?',
-      new_start_date.beginning_of_day,
-      new_end_date.end_of_day,
-      new_start_date.beginning_of_day,
-      new_end_date.end_of_day,
-      params[:resource]
-    )
-
-    if actual_reservation.empty?
+    if validate_reservation(nil, new_start_date, new_end_date, params[:resource])
       reservation = Reservation.new
       reservation.host_name = params[:name]
       reservation.host_email = params[:email]
@@ -129,43 +118,40 @@ class ReservationController < ApplicationController
     end
   end
 
-  def retrieve
-    respond_to do |format|
-      @reservation = Reservation.find_by(id: params[:id])
-
-      format.json { render json: @reservation }
-      format.html { render json: @reservation }
-    end
-  end
-
   def update
-    reservation = Reservation.find_by(id: params[:id])
-    availability_change = []
-
     new_start_date = Date.parse(params[:newStart]).to_date
     new_end_date = Date.parse(params[:newEnd]).to_date
 
+    if validate_reservation(params[:id], new_start_date, new_end_date, params[:newRoom])
+      reservation = Reservation.find_by(id: params[:id])
+      availability_change = []
 
+      if validate_new_room_capacity(params[:newRoom],
+                                    reservation.rooms.first.id)
+        if (reservation.date_from != new_start_date) || (reservation.date_to != new_end_date)
+          availability_change << AvailabilityChange.new(reservation.rooms[0].beds, reservation.date_from, reservation.date_to)
+          availability_change << AvailabilityChange.new(reservation.rooms[0].beds, new_start_date, new_end_date)
+        end
 
-    if (reservation.date_from != new_start_date) ||
-       (reservation.date_to != new_end_date)
-      availability_change << AvailabilityChange.new(reservation.rooms[0].beds, reservation.date_from, reservation.date_to)
-      availability_change << AvailabilityChange.new(reservation.rooms[0].beds, new_start_date,new_end_date)
+        reservation.host_name = params[:newName]
+        reservation.host_email = params[:newEmail]
+        reservation.host_phone_number = params[:newPhone]
+        reservation.date_from = new_start_date
+        reservation.date_to = new_end_date
+        reservation.room_ids = [params[:newRoom]]
+        reservation.updated_at = Time.now
+        reservation.save
+
+        sync_service = SyncService.new
+        sync_service.delay.sync_channels_availability(availability_change)
+
+        render json: { result: 'OK', message: 'OK' }, status: :ok
+      else
+        render json: { result: 'Error', message: 'Error' }, status: :ok
+      end
+    else
+      render json: { result: 'Error', message: 'Error' }, status: :ok
     end
-
-    reservation.host_name = params[:newName]
-    reservation.host_email = params[:newEmail]
-    reservation.host_phone_number = params[:newPhone]
-    reservation.date_from = new_start_date
-    reservation.date_to = new_end_date
-    reservation.status = params[:newStatus]
-    reservation.updated_at = Time.now
-    reservation.save
-
-    sync_service = SyncService.new
-    sync_service.delay.sync_channels_availability(availability_change)
-
-    render json: { result: 'OK', message: 'OK' }, status: :ok
   end
 
   def index
@@ -181,6 +167,46 @@ class ReservationController < ApplicationController
       format.json { render json: reservation }
       format.html
     end
+  end
+
+  # Validations
+  def validate_reservation(reservation_id, date_from, date_to, room_id)
+    valid_reservation = false
+    condition = '((date_from BETWEEN ? AND ?) OR (date_to BETWEEN ? AND ?))
+                AND rooms.id = ? '
+    condition += 'AND reservations.id <> ?' if reservation_id
+
+    if reservation_id
+      actual_reservation = Reservation.joins(:rooms).where(condition,
+                                                           date_from.beginning_of_day,
+                                                           date_to.end_of_day,
+                                                           date_from.beginning_of_day,
+                                                           date_to.end_of_day,
+                                                           room_id,
+                                                           reservation_id)
+    else
+      actual_reservation = Reservation.joins(:rooms).where(condition,
+                                                           date_from.beginning_of_day,
+                                                           date_to.end_of_day,
+                                                           date_from.beginning_of_day,
+                                                           date_to.end_of_day,
+                                                           room_id)
+    end
+
+    valid_reservation = true if actual_reservation.empty?
+
+    valid_reservation
+  end
+
+  def validate_new_room_capacity(new_room_id, old_room_id)
+    valid_room_capacity = false
+
+    new_room = Room.find(new_room_id)
+    old_room = Room.find(old_room_id)
+
+    valid_room_capacity = true if new_room.beds == old_room.beds
+
+    valid_room_capacity
   end
 
 end

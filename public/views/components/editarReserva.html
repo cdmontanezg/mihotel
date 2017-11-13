@@ -13,36 +13,41 @@
 
     <h1>Editar Reserva</h1>
     <div>Fecha inicio:</div>
-    <div><input type="date" id="start" name="start" ng-model="reservation.start"/></div>
+    <div><input type="date" id="start" name="start" ng-model="reservation.start" ng-disabled="informacionNoEditable"/>
+    </div>
     <div>Fecha fin:</div>
-    <div><input type="date" id="end" name="end" ng-model="reservation.end"/></div>
+    <div><input type="date" id="end" name="end" ng-model="reservation.end" ng-disabled="informacionNoEditable"/></div>
     <div>Nombre:</div>
     <div><input type="text" id="name" name="name" ng-model="reservation.name"/></div>
     <div>Correo electrónico:</div>
     <div><input type="email" id="email" name="email" ng-model="reservation.email"/></div>
     <div>Teléfono:</div>
-    <div><input type="text" id="phone" name="phone" ng-model="reservation.phone" numbers-only/></div>
-    <div>Status:</div>
+    <div><input type="text" id="phone" name="phone" ng-model="reservation.phone" ng-disabled="informacionNoEditable"
+                numbers-only/></div>
+    <div>Cuarto:</div>
     <div>
-        <select id="status" name="status" ng-model="reservation.status">
-            <option ng-repeat="status in statusList">{{status}}</option>
-        </select>
+        <select id="cuarto" name="cuarto" ng-options="room.number for room in rooms track by room.id"
+                ng-model="reservation.room"></select>
     </div>
-    <div class="space"><input type="submit" value="Guardar" ng-click="save()"/> <a href="" id="cancel" ng-click="cancel()">Salir</a>
-    </div>
+    <div class="space"><input type="submit" value="Guardar" ng-click="save()"/><a href="" id="cancel"
+                                                                                  ng-click="cancel()">Salir</a></div>
 
 </div>
 
 <script type="text/javascript">
     var app = angular.module('main', ['daypilot']).controller('EditReservationController', function ($scope, $timeout, $http) {
 
-        var params = {
-            id: sessionStorage.getItem('reservationId')
-        };
+        var reservationToEdit;
 
-        $scope.statusList = ["Nueva", "Cerrada", "Confirmada", "Cancelada"];
+        init();
 
-        getReservation();
+        function init() {
+            $scope.informacionNoEditable = false;
+            reservationToEdit = JSON.parse(sessionStorage.getItem('reservationToEdit'));
+
+            getRooms();
+            getReservation();
+        }
 
         $scope.save = function () {
             $http.post("/reservation/update", {
@@ -52,8 +57,9 @@
                 newName: $scope.reservation.name,
                 newEmail: $scope.reservation.email,
                 newPhone: $scope.reservation.phone,
-                newStatus: $scope.reservation.status
-            }).then(function(response) {
+                newStatus: $scope.reservation.status,
+                newRoom: $scope.reservation.room.id
+            }).then(function (response) {
                 DayPilot.Modal.close(response);
             });
 
@@ -63,46 +69,45 @@
         };
 
         function getReservation() {
-            $http.post("/reservation/retrieve", params).then(function (response) {
+            $scope.reservationRoom = {};
+
+            $http.get("/room/" + reservationToEdit.resource).then(function (response) {
                 if (response.data) {
-                    $scope.reservation = {
-                        id: response.data.id,
-                        name: response.data.host_name,
-                        email: response.data.host_email,
-                        phone: response.data.host_phone_number,
-                        start: new Date(response.data.date_from),
-                        end: new Date(response.data.date_to),
-                        room: '',
-                        status: response.data.status
-                    };
+                    $scope.reservationRoom = response.data;
+                }
+            });
+
+            $timeout(function () {
+                $http.get("/reservation/" + reservationToEdit.id).then(function (response) {
+                    if (response.data) {
+                        $scope.reservation = {
+                            id: response.data.id,
+                            name: response.data.host_name,
+                            email: response.data.host_email,
+                            phone: response.data.host_phone_number,
+                            start: new Date(response.data.date_from),
+                            end: new Date(response.data.date_to),
+                            room: $scope.reservationRoom,
+                            channel: response.data.channel_id
+                        };
+                        if ($scope.reservation.channel && $scope.reservation.channel != "") {
+                            $scope.informacionNoEditable = true;
+                        }
+                    }
+                });
+            }, 500);
+        }
+
+        function getRooms() {
+            var params = {params: {hotel_id: 1}};
+            $http.get('/room', params).then(function (response) {
+                if (response.data) {
+                    $scope.rooms = response.data;
                 }
             });
         }
 
         $("#name").focus();
-    });
-
-
-    app.directive('dateFormat', function () {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function (scope, element, attrs, ngModel) {
-                if (ngModel) {
-                    // parse the input value using the format string, pass the normalized ISO8601 value to the model
-                    // unparseable value returns null
-                    ngModel.$parsers.push(function (value) {
-                        var d = DayPilot.Date.parse(value, attrs.dateFormat);
-                        return d && d.toString();
-                    });
-                    // display the date in the specified format
-                    // null value will be returned as null
-                    ngModel.$formatters.push(function (value) {
-                        return value && new DayPilot.Date(value).toString(attrs.dateFormat);
-                    });
-                }
-            }
-        };
     });
 
     app.directive('numbersOnly', function () {
@@ -121,6 +126,7 @@
                     }
                     return undefined;
                 }
+
                 ngModel.$parsers.push(fromUser);
             }
         };

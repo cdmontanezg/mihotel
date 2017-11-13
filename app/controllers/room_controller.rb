@@ -3,10 +3,10 @@ class RoomController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
   def index
-      respond_to do |format|
-        format.json { render json: Room.where(hotel_id: params[:hotel_id])  }
-        format.html
-      end
+    respond_to do |format|
+      format.json { render json: Room.where(hotel_id: params[:hotel_id]) }
+      format.html
+    end
   end
 
   def create

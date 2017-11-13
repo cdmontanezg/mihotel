@@ -50,7 +50,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                     args.resource.cssClass = "status_cleanup";
                     break;
             }
-            args.resource.areas = [{
+            /*args.resource.areas = [{
                 top:3,
                 right:4,
                 height:14,
@@ -65,7 +65,7 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                 },
                 v:"Hover",
                 css:"icon icon-edit",
-            }];
+            }];*/
         },
         onEventMoved: function (args) {
             $http.post("/reservation/move", {
@@ -103,8 +103,11 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
                 dp.clearSelection();
 
                 // reload all events
-                if (this.result && this.result.data && this.result.data.result === "OK") {
-                    loadEvents();
+                if (this.result && this.result.data) {
+                    if (this.result.data.result === "OK")
+                        loadEvents();
+                    else
+                        dp.message(this.result.data.message);
                 }
             };
 
@@ -115,19 +118,21 @@ var app = angular.module('app', ['daypilot']).controller('DemoCtrl', function($s
             };
 
             sessionStorage.setItem('newReservation', JSON.stringify(reservation));
-
             modal.showUrl("views/components/nuevaReserva.html");
         },
         onEventClick: function(args) {
             var modal = new DayPilot.Modal();
             modal.closed = function() {
                 // reload all events
-                if (this.result && this.result.data && this.result.data.result === "OK") {
-                    loadEvents();
+                if (this.result && this.result.data) {
+                    if (this.result.data.result === "OK")
+                        loadEvents();
+                    else
+                        dp.message(this.result.data.message);
                 }
             };
 
-            sessionStorage.setItem('reservationId', args.e.id());
+            sessionStorage.setItem('reservationToEdit', JSON.stringify(args.e.data));
             modal.showUrl("views/components/editarReserva.html");
         },
         onBeforeEventRender: function(args) {
