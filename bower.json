@@ -21,7 +21,8 @@
     "daypilot": "*",
     "at-table" : "latest",
     "ng-dialog" : "latest",
-    "tether": "latest"
+    "tether": "latest",
+    "ng-token-auth": "latest"
   },
   "resolutions": {
     "jquery": "^3.2.1",

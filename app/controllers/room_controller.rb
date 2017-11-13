@@ -1,4 +1,5 @@
 class RoomController < ApplicationController
+  before_action :authenticate_user!
   respond_to :json
   protect_from_forgery unless: -> { request.format.json? }
 

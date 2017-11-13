@@ -7,6 +7,9 @@
     <script src="../../bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="../../bower_components/angular/angular.min.js" type="text/javascript"></script>
     <script src="../../bower_components/daypilot/daypilot-all.min.js" type="text/javascript"></script>
+
+    <script src="../../bower_components/angular-cookie/angular-cookie.min.js"></script>
+    <script src="../../bower_components/ng-token-auth/dist/ng-token-auth.min.js"></script>
 </head>
 <body>
 <div ng-app="main" ng-controller="NewReservationController" style="padding:10px">
@@ -36,7 +39,13 @@
 
 <script type="text/javascript">
 
-    var app = angular.module('main', ['daypilot']).controller('NewReservationController', function ($scope, $timeout, $http) {
+    var app = angular.module('main', ['daypilot', 'ng-token-auth'])
+        .config(['$authProvider', function($authProvider) {
+            $authProvider.configure({
+                apiUrl: '/api'
+            });
+        }])
+        .controller('NewReservationController', function ($scope, $timeout, $http) {
 
         var newReservation = JSON.parse(sessionStorage.getItem('newReservation'));
 
@@ -53,7 +62,7 @@
         };
         $scope.save = function () {
             if (validateRequiredFields()) {
-                $http.post("/reservation/create", {
+                $http.post("/api/reservation/create", {
                     name: $scope.reservation.name,
                     email: $scope.reservation.email,
                     phone: $scope.reservation.phone,

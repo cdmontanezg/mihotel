@@ -2,13 +2,16 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" ui-sref-active="active" ui-sref="app.main"><i class="icon-speedometer"></i>Tablero</a>
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.main"><i class="icon-speedometer"></i> Tablero</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" ui-sref-active="active" ui-sref="app.daypilot"><i class="icon-calendar"></i> Reservas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" ui-sref-active="active" ui-sref="app.notificaciones"><i class="icon-star"></i>Notificaciones</a>
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.notificaciones"><i class="icon-star"></i> Notificaciones</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ng-click='signOut()' href="#"><i class="fa fa-lock"></i> Salir</a>
             </li>
             <!--
             <li class="divider"></li>
@@ -62,9 +65,6 @@
             <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.pages')}">
                 <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.pages')}" href="#"><i class="icon-star"></i> Pages</a>
                 <ul class="nav-dropdown-items">
-                    <li class="nav-item">
-                        <a class="nav-link" ui-sref-active="active" ui-sref="appSimple.login"><i class="icon-star"></i> Login</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" ui-sref-active="active" ui-sref="appSimple.register"><i class="icon-star"></i> Register</a>
                     </li>

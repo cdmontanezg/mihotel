@@ -19,7 +19,7 @@ angular.module('app').controller('notificacionesController', function notificaci
   }
 
   function filtrarDias(dias) {
-    $http.get('/notification',{params: {hotel_id: 1}})
+    $http.get('/api/notification',{params: {hotel_id: 1}})
       .then(function (response) {
         notificaciones = response.data;
         $scope.todasNotificaciones = [];
@@ -74,7 +74,7 @@ angular.module('app').controller('notificacionesController', function notificaci
   }
 
   function obtenerReserva(idReserva) {
-    $http.get('/reservation/' + idReserva)
+    $http.get('/api/reservation/' + idReserva)
       .then(function (response) {
         $scope.reserva = response.data;
       });

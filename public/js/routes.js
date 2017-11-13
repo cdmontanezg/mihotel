@@ -57,6 +57,9 @@ angular
           label: 'Tablero',
         },
         resolve: {
+          auth: function($auth) {
+              return $auth.validateUser();
+          },
           loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
             // you can lazy load files for an existing module
             return $ocLazyLoad.load({
@@ -72,6 +75,9 @@ angular
           label: 'Notificaciones',
         },
         resolve: {
+          auth: function($auth) {
+              return $auth.validateUser();
+          },
           loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
             // you can lazy load files for an existing module
             return $ocLazyLoad.load({
@@ -90,6 +96,9 @@ angular
         //page subtitle goes here
         params: {subtitle: 'Welcome to ROOT powerfull Bootstrap & AngularJS UI Kit'},
         resolve: {
+          auth: function($auth) {
+              return $auth.validateUser();
+          },
           loadPlugin: ['$ocLazyLoad', function ($ocLazyLoad) {
             // you can lazy load files for an existing module
             return $ocLazyLoad.load([
