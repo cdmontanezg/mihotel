@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'application#index'
   resources :notification, only: [:index, :show, :create, :destroy], defaults: {format: :json}, path: '/api/notification'
   post '/api/room/available' => 'room#available', defaults: { format: :json }
-  post '/room/create' => 'room#create', defaults: { format: :json }
+  post '/api/room/create' => 'room#create', defaults: { format: :json }
   post '/api/reservation/events' => 'reservation#events', defaults: { format: :json }
   post '/api/reservation/resize' => 'reservation#resize', defaults: { format: :json }
   post '/api/reservation/move' => 'reservation#move', defaults: { format: :json }

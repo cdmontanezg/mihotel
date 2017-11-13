@@ -5,9 +5,9 @@
             <daypilot-navigator id="navigator" daypilot-config="navigatorConfig"></daypilot-navigator>
         </div>
         <div style="margin-left: 160px">
-            <div class="space options">
-                Filtro Cuartos:
-                <select ng-model="roomType">
+            <div class="form-group col-sm-3">
+                <label for="roomType">Filtro Cuartos</label>
+                <select id="roomType"  ng-model="roomType" class="form-control-sm">
                     <option value="0">Todos</option>
                     <option value="1">Sencilla</option>
                     <option value="2">Doble</option>
