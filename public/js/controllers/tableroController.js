@@ -1,4 +1,4 @@
-angular.module('app').controller('tableroController', function tableroController($scope, $http, $filter) {
+angular.module('app').controller('tableroController', function tableroController($scope, $http, $filter, $timeout) {
 
   initController();
 
@@ -14,15 +14,22 @@ angular.module('app').controller('tableroController', function tableroController
         cuartos = response.data;
         ocupados = 0;
         libres = 0;
-        for(i = 0; i<cuartos.length;i++){
-         if(cuartos[i].status == 'Ready'){
-           libres++;
-         }else {
-           ocupados++;
-         }
-        }
-        $scope.labelsOcupadas = ['Ocupadas', 'Libres'];
-        $scope.dataOcupadas = [ocupados, libres];
+
+        cuartos.forEach(function (cuarto) {
+            $http.post('/api/reservation/room', {room_id: cuarto.id})
+                .then(function (response) {
+                   if (response.data && response.data.length > 0)
+                       ocupados++;
+                   else
+                       libres++;
+                });
+        });
+
+        $timeout(function () {
+            $scope.labelsOcupadas = ['Ocupadas', 'Libres'];
+            $scope.dataOcupadas = [ocupados, libres];
+        }, 1000);
+
       });
   }
 
@@ -43,20 +50,20 @@ angular.module('app').controller('tableroController', function tableroController
         dias = 7;
         fechaInicial = sumarDias(new Date(),-(dias-1));
         fechaInicial.setHours(0,0,0,0);
-        for(i = 0; i<reservas.length;i++){
-          fechaSinUTC =  reservas[i].date_from.replace('Z', '');
+        reservas.forEach(function (reserva) {
+          fechaSinUTC =  reserva.date_from.replace('Z', '');
           fechaReserva = new Date(fechaSinUTC);
           fechaReserva.setHours(0,0,0,0);
           if (fechaReserva >= fechaInicial){
             //calcular diferencia en fechas
             dif = Math.floor((new Date().getTime() - fechaReserva.getTime())/(1000*60*60*24));
-            if (reservas[i].channel_id == 1) {
+            if (reserva.channel_id == 1) {
               arregloReservasBooking[6-dif] = arregloReservasBooking[6-dif] + 1;
-            } else if (reservas[i].channel_id == 2) {
+            } else if (reserva.channel_id == 2) {
               arregloReservasExpedia[6-dif] = arregloReservasExpedia[6-dif] + 1;
             }
           }
-        }
+        });
         $scope.labels = arregloDias;
         $scope.series = ['Booking', 'Expedia'];
         $scope.dataCanales = [

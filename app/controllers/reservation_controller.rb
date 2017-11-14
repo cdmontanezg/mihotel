@@ -187,6 +187,18 @@ class ReservationController < ApplicationController
     end
   end
 
+  def by_room
+    respond_to do |format|
+      condition = '? BETWEEN reservations.date_from AND reservations.date_to
+                  AND rooms.id = ?'
+      reservation = Reservation.joins(:rooms).where(condition,
+                                                    Time.now,
+                                                    params[:room_id])
+      format.json { render json: reservation }
+      format.html { render json: reservation }
+    end
+  end
+
   # Validations
   def validate_reservation(reservation_id, date_from, date_to, room_id)
     valid_reservation = false

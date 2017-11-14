@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   post '/api/reservation/delete' => 'reservation#delete', defaults: { format: :json }
   post '/api/reservation/create' => 'reservation#create', defaults: { format: :json }
   post '/api/reservation/update' => 'reservation#update', default: { format: :json }
+  post '/api/reservation/room' => 'reservation#by_room', default: { format: :json }
   resources :room, only: [:index, :show, :create, :destroy], defaults: { format: :json }, path: '/api/room'
   resources :reservation, only: [:index, :show], defaults: {format: :json}, path: '/api/reservation'
 end
