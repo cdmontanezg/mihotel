@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/codahale/bcrypt-ruby.git
+  revision: f2db689ba567d1a018f4dacb1ccf909adc93e887
+  specs:
+    bcrypt (3.1.11)
+
+GIT
   remote: https://github.com/rails/webpacker.git
   revision: 815458ccbd22537c60d0f779b53ff174a12b784b
   specs:
@@ -68,6 +74,15 @@ GEM
     delayed_job_recurring (0.3.7)
       delayed_job (>= 3.0)
       delayed_job_active_record
+    devise (4.3.0)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 4.1.0, < 5.2)
+      responders
+      warden (~> 1.2.3)
+    devise_token_auth (0.1.42)
+      devise (> 3.5.2, <= 4.3)
+      rails (< 6)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.6.1)
@@ -76,6 +91,7 @@ GEM
     ffi (1.9.18-x64-mingw32)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
+    hashie (3.5.6)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.6)
@@ -100,10 +116,15 @@ GEM
       mini_portile2 (~> 2.3.0)
     nokogiri (1.8.1-x64-mingw32)
       mini_portile2 (~> 2.3.0)
+    omniauth (1.7.1)
+      hashie (>= 3.4.6, < 3.6.0)
+      rack (>= 1.6.2, < 3)
+    orm_adapter (0.5.0)
     pg (0.21.0)
     pg (0.21.0-x64-mingw32)
     puma (3.10.0)
     rack (2.0.3)
+    rack-cors (1.0.2)
     rack-proxy (0.6.2)
       rack
     rack-test (0.7.0)
@@ -181,6 +202,8 @@ GEM
       unf_ext
     unf_ext (0.0.7.4)
     unf_ext (0.0.7.4-x64-mingw32)
+    warden (1.2.7)
+      rack (>= 1.0)
     web-console (3.5.1)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -196,12 +219,16 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  bcrypt!
   byebug
   coffee-rails (~> 4.2)
   delayed_job_recurring
+  devise_token_auth
   jbuilder (~> 2.5)
+  omniauth
   pg (~> 0.18)
   puma (~> 3.7)
+  rack-cors
   rails (~> 5.1.4)
   responders
   rest-client
@@ -214,4 +241,4 @@ DEPENDENCIES
   will_paginate (~> 3.1.0)
 
 BUNDLED WITH
-   1.15.4
+   1.16.0

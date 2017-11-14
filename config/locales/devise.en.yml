@@ -1,0 +1,5 @@
+en:
+  devise_token_auth:
+    sessions:
+      bad_credentials: "Credenciales de acceso inválidas. Intente nuevamente."
+      user_not_found: "Usuario no encontrado o no tiene sesión activa"
